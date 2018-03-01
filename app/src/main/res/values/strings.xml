@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">HandMadeEvent</string>
     <string name="title_activity_maps">Map</string>
+    <string name="auth_text_success_authentication">Successfully signed in. Welcome!</string>
+    <string name="auth_text_fail_authentication">We couldn\'t sign you in. Please try again later.</string>
+    <string name="auth_text_welcome">Welcome</string>
 </resources>
