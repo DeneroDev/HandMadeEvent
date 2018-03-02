@@ -14,11 +14,11 @@ import java.util.*
 
 class AuthenticationActivity : AppCompatActivity() {
     val SIGN_IN_REQUEST_CODE = 1
+    private val LOG_TAG: String = "GOT"
+    private val LOG_HEAD: String = AuthenticationActivity::class.java.simpleName
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
-        val mAuth = FirebaseAuth.getInstance()
-        mAuth.signOut()
 
         if(FirebaseAuth.getInstance().currentUser == null) {
 
@@ -26,8 +26,9 @@ class AuthenticationActivity : AppCompatActivity() {
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setIsSmartLockEnabled(false)
-                            .setProviders(Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                    AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
+                            .setAvailableProviders(Arrays.asList(
+                                    AuthUI.IdpConfig.EmailBuilder().build(),
+                                    AuthUI.IdpConfig.GoogleBuilder().build()
                             ))
                             .build(),
                     SIGN_IN_REQUEST_CODE)
@@ -38,33 +39,33 @@ class AuthenticationActivity : AppCompatActivity() {
                             .currentUser?.displayName  ),
                     Toast.LENGTH_LONG)
                     .show()
-            //startActivity(...)
+            startActivity(Intent(applicationContext,CreatedNewEventActivity::class.java))
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        pushLog("onActivityResult",requestCode)
+
         if(requestCode == SIGN_IN_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
                 Toast.makeText(this,
                         getString(R.string.auth_text_success_authentication),
                         Toast.LENGTH_LONG)
                         .show()
-                //startActivity(...)
+//                startActivity(...)
+
             } else {
                 Toast.makeText(this,
                         getString(R.string.auth_text_fail_authentication),
                         Toast.LENGTH_LONG)
-                        .show();
+                        .show()
 
                 // Close the app
-                finish();
+                finish()
             }
         }
     }
-    private val LOG_TAG: String = "DZ"
-    private val LOG_HEAD: String = AuthenticationActivity::class.java.simpleName
+
     private fun pushLog(topic: String, message: Any) {
         Log.d(LOG_TAG, "$LOG_HEAD $topic $message")
     }
