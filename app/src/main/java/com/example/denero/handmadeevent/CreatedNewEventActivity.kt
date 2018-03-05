@@ -1,11 +1,14 @@
 package com.example.denero.handmadeevent
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.location.Location
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentManager
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import com.google.android.gms.maps.*
 
@@ -137,10 +140,24 @@ class CreatedNewEventActivity : AppCompatActivity(),
                 } else {
                     val myRef = FirebaseDatabase.getInstance().reference.child("Events")
                     myRef.push().setValue(newEvent)
-                    // finish() запись созданна
+                    startActivity(Intent(applicationContext,MapsActivity::class.java))
                 }
             }
 
+        })
+
+
+
+
+        bottom_navigation.setOnNavigationItemSelectedListener(object :BottomNavigationView.OnNavigationItemSelectedListener {
+            override fun onNavigationItemSelected(item: MenuItem): Boolean {
+                when(item.itemId){
+                    R.id.action_add_event -> {}
+                    R.id.action_all_event -> { startActivity(Intent(applicationContext,MapsActivity::class.java))}
+                    R.id.action_open_favorites -> {}
+                }
+                return false
+            }
         })
     }
 
