@@ -14,21 +14,25 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import android.content.Context.LOCATION_SERVICE
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Parcel
 import android.os.Parcelable
+import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import android.view.MenuItem
 import com.example.denero.handmadeevent.model.Event
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_created_new_event.*
 import java.security.Permission
 import java.util.jar.Manifest
 
@@ -71,7 +75,7 @@ class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarke
         }
 
         override fun onProviderDisabled(provider: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+           
         }
 
     }
@@ -121,6 +125,18 @@ class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarke
 
             override fun onChildRemoved(p0: DataSnapshot?) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+
+
+        bottom_navigation.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
+            override fun onNavigationItemSelected(item: MenuItem): Boolean {
+                when(item.itemId){
+                    R.id.action_add_event -> {startActivity(Intent(applicationContext,CreatedNewEventActivity::class.java))}
+                    R.id.action_all_event -> {}
+                    R.id.action_open_favorites -> {}
+                }
+                return false
             }
         })
 
