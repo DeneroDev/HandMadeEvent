@@ -35,11 +35,11 @@ class AuthenticationActivity : AppCompatActivity() {
 
         } else {
             Toast.makeText(this,
-                    getString(R.string.auth_text_welcome) + (FirebaseAuth.getInstance()
+                    getString(R.string.auth_text_welcome) + " " + (FirebaseAuth.getInstance()
                             .currentUser?.displayName  ),
                     Toast.LENGTH_LONG)
                     .show()
-            startActivity(Intent(applicationContext,CreatedNewEventActivity::class.java))
+            startActivity(Intent(applicationContext,MapsActivity::class.java))
         }
     }
 
