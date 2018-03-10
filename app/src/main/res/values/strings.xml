@@ -29,4 +29,10 @@
     <string name="hint_tv_start_time">Start time</string>
     <string name="hint_tv_expiration_time">Expiration time</string>
     <string name="hint_tv_description">Description</string>
+    <string name="key_all_event_fragment">AllEvent</string>
+    <string name="text_btn_subscribe_item">Subscribe</string>
+    <string name="name_table_event_db">Events</string>
+
+
+    <integer name="number_event_records_for_sample">60</integer>
 </resources>

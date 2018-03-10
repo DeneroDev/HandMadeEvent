@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 import android.support.v4.app.ActivityCompat
+import com.example.denero.handmadeevent.model.Event
 
 
 class CreatedNewEventActivity : AppCompatActivity(),
@@ -169,9 +170,9 @@ class CreatedNewEventActivity : AppCompatActivity(),
                 if (newEvent.dateStart > newEvent.dateExpiration) {
                     Toast.makeText(applicationContext, "Start date can't be a late end date", Toast.LENGTH_SHORT).show()
                 } else {
-                    val myRef = FirebaseDatabase.getInstance().reference.child("Events")
+                    val myRef = FirebaseDatabase.getInstance().reference.child(getString(R.string.name_table_event_db))
                     myRef.push().setValue(newEvent)
-                    // finish() запись созданна
+                     finish() //запись созданна
                 }
             }
 
@@ -192,7 +193,7 @@ class CreatedNewEventActivity : AppCompatActivity(),
         val fullDateStartNewEvent: Calendar = buildDateStart()
         val fullDateExpirationNewEvent: Calendar = buildDateExpiration()
         val locationNewEvent: LatLng = buildLocation()
-        return Event(FirebaseAuth.getInstance().currentUser!!.email!!,
+        return Event(FirebaseAuth.getInstance().currentUser!!.uid,
                 titleNewEvent,
                 descriptionNewEvent,
                 locationNewEvent.latitude,

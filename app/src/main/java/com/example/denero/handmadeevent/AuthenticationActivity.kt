@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.denero.handmadeevent.EventList.EventListActivity
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
@@ -39,7 +40,7 @@ class AuthenticationActivity : AppCompatActivity() {
                             .currentUser?.displayName  ),
                     Toast.LENGTH_LONG)
                     .show()
-            startActivity(Intent(applicationContext,MapsActivity::class.java))
+            startActivity(Intent(applicationContext,EventListActivity::class.java))
         }
     }
 

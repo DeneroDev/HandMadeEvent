@@ -91,7 +91,7 @@ class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarke
         FirebaseApp.initializeApp(applicationContext)
         mAuth = FirebaseAuth.getInstance()
         var database = FirebaseDatabase.getInstance()
-        myRef = database.getReference("Events")
+        myRef = database.getReference(getString(R.string.name_table_event_db))
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
@@ -115,6 +115,7 @@ class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarke
             }
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
+
                 var event: Event = p0!!.getValue(Event::class.java)!!
                 mMap.addMarker(MarkerOptions()
                         .position(LatLng(event.latitude,event.longitude))
