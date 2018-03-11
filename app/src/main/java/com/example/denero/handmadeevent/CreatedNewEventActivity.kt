@@ -172,7 +172,7 @@ class CreatedNewEventActivity : AppCompatActivity(),
                 } else {
                     val myRef = FirebaseDatabase.getInstance().reference.child(getString(R.string.name_table_event_db))
                     myRef.push().setValue(newEvent)
-                     finish() //запись созданна
+//                     finish() //запись созданна
                 }
             }
 

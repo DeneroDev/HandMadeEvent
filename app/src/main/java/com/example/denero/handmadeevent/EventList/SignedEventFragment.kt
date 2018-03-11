@@ -92,7 +92,7 @@ class SignedEventFragment : Fragment()
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 attendeesEventList?.clear()
                 if (dataSnapshot.value == null) {
-                    mListener!!.closeMe(activity!!.getString(R.string.key_signed_events_fragment))
+                    mListener!!.closeMe(activity!!.getString(R.string.key_signed_events_fragment)) // падает
                 } else {
 
                     for (idEvent in dataSnapshot.children) {

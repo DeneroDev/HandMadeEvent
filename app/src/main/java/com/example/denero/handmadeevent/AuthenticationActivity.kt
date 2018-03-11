@@ -19,6 +19,8 @@ class AuthenticationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
 
+
+
         if (FirebaseAuth.getInstance().currentUser == null) {
 
             startActivityForResult(
