@@ -45,7 +45,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreatedNewEventActivity" />
-        <activity android:name=".EventList.EventListActivity"></activity>
+        <activity android:name=".EventList.EventListActivity" />
+        <activity
+            android:name=".lActivity"
+            android:label="@string/title_activity_l"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

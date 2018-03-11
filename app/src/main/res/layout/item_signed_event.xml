@@ -9,10 +9,10 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/main_layout_item_event">
+        android:id="@+id/main_layout_item_signed_event">
 
         <TextView
-            android:id="@+id/tv_title_event_item_event"
+            android:id="@+id/tv_title_event_item_signed_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -20,36 +20,41 @@
             android:layout_marginStart="48dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_time_start_event_item_event"
+            app:layout_constraintEnd_toStartOf="@+id/tv_time_start_event_item_signed_event"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.517"
-            tools:text="6666666666666666666666666625" />
+            tools:text="6666666666666666666666666625"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="48dp" />
 
         <TextView
-            android:id="@+id/tv_time_start_event_item_event"
+            android:id="@+id/tv_time_start_event_item_signed_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_subscribe_item_event"
+            app:layout_constraintEnd_toStartOf="@+id/btn_unsubscribe_item_signed_event"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.517"
-            tools:text="02:04:2011" />
+            tools:text="02:04:2011"
+            android:layout_marginRight="8dp"
+              />
 
         <Button
-            android:id="@+id/btn_subscribe_item_event"
+            android:id="@+id/btn_unsubscribe_item_signed_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/text_btn_subscribe_item"
+            android:text="@string/text_btn_unsubscribe_item_signed_event"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="8dp" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

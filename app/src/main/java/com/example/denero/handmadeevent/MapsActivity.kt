@@ -26,6 +26,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.MenuItem
+import com.example.denero.handmadeevent.EventList.EventListActivity
 import com.example.denero.handmadeevent.model.Event
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.firebase.FirebaseApp
@@ -134,8 +135,11 @@ class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarke
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when(item.itemId){
                     R.id.action_add_event -> {startActivity(Intent(applicationContext,CreatedNewEventActivity::class.java))}
-                    R.id.action_all_event -> {}
-                    R.id.action_open_favorites -> {}
+                    R.id.action_all_event -> {startActivity(Intent(applicationContext,EventListActivity::class.java))}
+                    R.id.action_open_favorites -> {startActivity(Intent(applicationContext
+                            ,EventListActivity::class.java)
+                                .putExtra(getString(R.string.key_signed_events_fragment)
+                                    ,getString(R.string.key_signed_events_fragment)))}
                 }
                 return false
             }

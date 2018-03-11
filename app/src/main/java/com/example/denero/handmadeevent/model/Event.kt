@@ -39,5 +39,13 @@ open class Event() {
 //        this.dateExpiration = dateExpiration
 //
 //    }
-
+    override fun toString(): String {
+        return "$userCreated:  " +
+                "$titleEvent:  " +
+                "$description:  " +
+                "$latitude:  " +
+                "$longitude: " +
+                "$dateStart: " +
+                "$dateExpiration:"
+    }
 }
