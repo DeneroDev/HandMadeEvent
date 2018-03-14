@@ -20,15 +20,24 @@ class EventFullInformationActivity : AppCompatActivity() {
         updateView(event)
 
         event_full_info_subscribe_btn.setOnClickListener({
-            FirebaseMessaging.getInstance().subscribeToTopic(event.firebaseKey)
+            subscribeOnEventNotification(event)
         })
 
         event_full_info_unsub_btn.setOnClickListener({
-            FirebaseMessaging.getInstance().unsubscribeFromTopic(event.firebaseKey)
+            unsubscribeOnEventNotification(event)
         })
     }
 
     private fun updateView(event: Event){
         event_full_info_title.text = event.titleEvent
+    }
+
+    //вызвать функцию при подписке
+    private fun subscribeOnEventNotification(event: Event) {
+        FirebaseMessaging.getInstance().subscribeToTopic(event.createTopic())
+    }
+    //вызвать функцию при отписке
+    private  fun unsubscribeOnEventNotification(event: Event) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(event.createTopic())
     }
 }

@@ -3,6 +3,7 @@ package com.example.denero.handmadeevent.EventList
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import com.example.denero.handmadeevent.Event
 import com.example.denero.handmadeevent.R
 import com.google.firebase.database.*
@@ -35,7 +36,6 @@ class EventListActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (singleSnapshot in dataSnapshot.children){
                     val event = singleSnapshot.getValue(Event::class.java) as Event
-                    event.firebaseKey = singleSnapshot.key
                     eventListAdapter.eventList.add(event)
                     event_list_rec_view.adapter.notifyDataSetChanged()
                 }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.util.Log
 import android.widget.Toast
+import com.example.denero.handmadeevent.Notification.RetrofitApiHelper
 import com.google.android.gms.maps.*
 
 import com.google.android.gms.maps.model.MarkerOptions
@@ -136,8 +137,13 @@ class CreatedNewEventActivity : AppCompatActivity(),
                     Toast.makeText(applicationContext, "Start date can't be a late end date", Toast.LENGTH_SHORT).show()
                 } else {
                     val myRef = FirebaseDatabase.getInstance().reference.child("Events")
-                    myRef.push().setValue(newEvent)
+                    var pushRef = myRef.push()
+                    pushRef.setValue(newEvent)
                     // finish() запись созданна
+
+                    val retrofitApiHelper = RetrofitApiHelper(newEvent, pushRef.key, Calendar.getInstance())
+                    retrofitApiHelper.sendStartNotification()
+
                 }
             }
 
@@ -151,7 +157,7 @@ class CreatedNewEventActivity : AppCompatActivity(),
             or (tv_new_event_time_start.text == "")
             or (tv_new_event_time_expiration.text == ""))
 
-
+    //Добавил Calendar.getInstance().timeInMillis в конструктор, т.к. изменился класс Event
     private fun buildDataForWriteInDB(): Event {
         val titleNewEvent = edit_text_new_event_title.text.toString()
         val descriptionNewEvent = edit_text_new_event_description.text.toString()
@@ -164,7 +170,8 @@ class CreatedNewEventActivity : AppCompatActivity(),
                 locationNewEvent.latitude,
                 locationNewEvent.longitude,
                 fullDateStartNewEvent.timeInMillis,
-                fullDateExpirationNewEvent.timeInMillis)
+                fullDateExpirationNewEvent.timeInMillis,
+                Calendar.getInstance().timeInMillis)
     }
 
     private fun buildLocation(): LatLng {

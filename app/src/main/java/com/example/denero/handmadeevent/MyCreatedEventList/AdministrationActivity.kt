@@ -16,6 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+//Не используется
 class AdministrationActivity : AppCompatActivity() {
 
     val TAG = "AdministrationActivity"
@@ -30,7 +31,7 @@ class AdministrationActivity : AppCompatActivity() {
         updateView(event)
 
         administration_send_notification_btn.setOnClickListener({
-            var client = RetrofitApiService.create()
+            /*var client = RetrofitApiService.create()
 
             var textMessage = "Hello my subscribers!"
             if (!administration_message_edit_text.text.isEmpty()) {
@@ -54,7 +55,7 @@ class AdministrationActivity : AppCompatActivity() {
                     else
                         Log.i(TAG, "Code: " + response.code().toString())
                 }
-            })
+            })*/
         })
 
     }
@@ -67,7 +68,7 @@ class AdministrationActivity : AppCompatActivity() {
         var JSON = MediaType.parse("application/json; charset=utf-8")
 
         var message = JSONObject()
-        message.put("to", "/topics/" + event.firebaseKey)
+        message.put("to", "/topics/" + event.createTopic())
 
         var data = JSONObject()
         data.put("message", text)

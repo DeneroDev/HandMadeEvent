@@ -38,7 +38,6 @@ class MyCreatedEventListActivity : AppCompatActivity() {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for (singleSnapshot in dataSnapshot.children){
                             val event = singleSnapshot.getValue(Event::class.java) as Event
-                            event.firebaseKey = singleSnapshot.key
                             eventListAdapter.eventList.add(event)
                             my_created_event_list_rec_view.adapter.notifyDataSetChanged()
                         }

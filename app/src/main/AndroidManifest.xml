@@ -57,6 +57,7 @@
 
         <activity android:name=".MyCreatedEventList.MyCreatedEventListActivity" />
         <activity android:name=".MyCreatedEventList.AdministrationActivity"></activity>
+        <receiver android:name=".ActionNotificationBtnReceiver" />
     </application>
 
 </manifest>

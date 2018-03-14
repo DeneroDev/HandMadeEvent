@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HandMadeEvent-got.iml" filepath="$PROJECT_DIR$/HandMadeEvent-got.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HandMadeEvent.iml" filepath="$PROJECT_DIR$/HandMadeEvent.iml" />
+      <module fileurl="file://D:\android\project\HandMadeEvent\HandMadeEvent-got.iml" filepath="D:\android\project\HandMadeEvent\HandMadeEvent-got.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

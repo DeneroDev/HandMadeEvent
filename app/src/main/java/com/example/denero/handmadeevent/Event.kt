@@ -1,17 +1,21 @@
 package com.example.denero.handmadeevent
 
-/**
- * Created by goga747 on 02.03.2018.
- */
+import java.util.*
+
+//Добивил поле createdTimeInMillis и функцию createTopic()
 class Event(var userCreated: String,
             var titleEvent: String,
             var description: String,
             var latitude: Double,
             var longitude: Double,
             var dateStart: Long,
-            var dateExpiration: Long) {
+            var dateExpiration: Long,
+            var createdTimeInMillis : Long) {
 
-    var firebaseKey = ""
 
-    constructor() : this("","","",0.0,0.0,0,0)
+    constructor() : this("","","",0.0,0.0,0,0, 0)
+
+    fun createTopic() : String{
+        return titleEvent + createdTimeInMillis.toString()
+    }
 }
