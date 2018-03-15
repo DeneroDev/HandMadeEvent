@@ -41,7 +41,8 @@ class AuthenticationActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG)
                     .show()
             // TODO: start Map
-            startActivity(Intent(applicationContext, MapsActivity::class.java))
+//            startActivity(Intent(applicationContext, MapsActivity::class.java))
+            startActivity(Intent(applicationContext, CreatedNewEventActivity::class.java))
         }
     }
 
