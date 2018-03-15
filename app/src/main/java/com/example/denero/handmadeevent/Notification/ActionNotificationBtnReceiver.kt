@@ -1,18 +1,13 @@
-package com.example.denero.handmadeevent
+package com.example.denero.handmadeevent.Notification
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.denero.handmadeevent.Notification.RetrofitApiHelper
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.Transaction
-import com.google.firebase.database.MutableData
-import com.google.firebase.database.DatabaseReference
+import com.example.denero.handmadeevent.EventStatistic
+import com.example.denero.handmadeevent.model.Event
+import com.google.firebase.database.*
 import java.util.*
 
 
@@ -30,7 +25,6 @@ class ActionNotificationBtnReceiver : BroadcastReceiver() {
     var notification_id = 0
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.i(TAG, "onReceive")
 
         contextField = context
 
@@ -66,7 +60,6 @@ class ActionNotificationBtnReceiver : BroadcastReceiver() {
             }
 
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
-                Log.i(TAG,"doTransaction1")
                 if (mutableData.value == null) {
                     mutableData.value =
                             if (bool)
@@ -99,8 +92,8 @@ class ActionNotificationBtnReceiver : BroadcastReceiver() {
                 var calendar = Calendar.getInstance()
                 event.dateStart = calendar.timeInMillis + LATER_TIME
 
-                var retrofitApiHelper = RetrofitApiHelper(event, event_key, calendar)
-                retrofitApiHelper.sendStartNotification()
+                var retrofitApiHelper = RetrofitApiHelper()
+                retrofitApiHelper.sendStartNotification(event, event_key, calendar)
             }
         })
     }

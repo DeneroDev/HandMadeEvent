@@ -8,15 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import java.io.Serializable
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_all_event_list.*
+import java.io.Serializable
 
 
 /**
@@ -45,15 +42,15 @@ class AllEventListFragment : Fragment()
     }
 
     override fun onCancelled(p0: DatabaseError?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onChildAdded(snapshot: DataSnapshot?, p1: String?) {

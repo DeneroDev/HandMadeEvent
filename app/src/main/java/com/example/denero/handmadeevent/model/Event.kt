@@ -11,6 +11,23 @@ open class Event() {
     var longitude: Double = 0.0
     var dateStart: Long = 0
     var dateExpiration: Long = 0
+    var createdTimeInMillis : Long = 0
+
+    constructor(userCreated: String,
+                titleEvent: String,
+                description: String,
+                latitude: Double,
+                longitude: Double,
+                dateStart: Long,
+                dateExpiration: Long) : this() {
+        this.userCreated = userCreated
+        this.titleEvent = titleEvent
+        this.description = description
+        this.latitude = latitude
+        this.longitude = longitude
+        this.dateStart = dateStart
+        this.dateExpiration = dateExpiration
+    }
 
 
     constructor(userCreated: String,
@@ -19,26 +36,23 @@ open class Event() {
                 latitude: Double,
                 longitude: Double,
                 dateStart: Long,
-                dateExpiration: Long) : this()
+                dateExpiration: Long,
+                createdTimeInMillis : Long) : this() {
+        this.userCreated = userCreated
+        this.titleEvent = titleEvent
+        this.description = description
+        this.latitude = latitude
+        this.longitude = longitude
+        this.dateStart = dateStart
+        this.dateExpiration = dateExpiration
+        this.createdTimeInMillis = createdTimeInMillis
+    }
 
-//    constructor(id: String,
-//                userCreated: String,
-//                titleEvent: String,
-//                description: String,
-//                latitude: Double,
-//                longitude: Double,
-//                dateStart: Long,
-//                dateExpiration: Long) : this(){
-//        this.id = id
-//        this.userCreated = userCreated
-//        this.titleEvent = titleEvent
-//        this.description = description
-//        this.latitude = latitude
-//        this.longitude = longitude
-//        this.dateStart = dateStart
-//        this.dateExpiration = dateExpiration
-//
-//    }
+    fun createTopic() : String{
+        var prepareTitle = titleEvent.replace(" ", "")
+        return prepareTitle + createdTimeInMillis.toString()
+    }
+
     override fun toString(): String {
         return "$userCreated:  " +
                 "$titleEvent:  " +

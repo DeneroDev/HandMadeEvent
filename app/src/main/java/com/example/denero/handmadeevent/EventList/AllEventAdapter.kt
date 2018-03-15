@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.example.denero.handmadeevent.Notification.NotificationSubscription
 import com.example.denero.handmadeevent.R
 
 import com.example.denero.handmadeevent.model.Event
@@ -59,6 +60,9 @@ class AllEventAdapter(var mLister: onAllEventAdapterListener,
             //TODO: колхоз
             holder.btnSubscribe.setOnClickListener(View.OnClickListener {
                 mLister.getIdSelectedEventForSubscribe(holder.id)
+
+                var event = data?.get(position)!![holder.id] as Event
+                NotificationSubscription().subscribeOn(event)
             })
 
         }

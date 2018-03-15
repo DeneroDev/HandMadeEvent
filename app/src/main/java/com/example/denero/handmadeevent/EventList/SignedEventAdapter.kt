@@ -8,19 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.example.denero.handmadeevent.Notification.NotificationSubscription
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import kotlinx.android.synthetic.main.item_signed_event.view.*
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
-import java.io.Serializable
+
 /**
  * Created by goga747 on 11.03.2018.
  */
 
 
 class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
-                      var data: MutableList<HashMap<String, Event>>?)
+                         var data: MutableList<HashMap<String, Event>>?)
     : RecyclerView.Adapter<SignedEventAdapter.MyViewHolder>() {
     private val LOG_TAG = "GOT"
     private val LOG_HEAD = SignedEventAdapter::class.java.simpleName
@@ -60,6 +62,9 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
             holder.btnUnsubscribe.setOnClickListener(View.OnClickListener {
                 pushLog("Click ${holder.id}", "subscribe")
                 mLister.getIdSelectedEventForUnsubscribe(holder.id)
+
+                var event = data?.get(position)!![holder.id] as Event
+                NotificationSubscription().unsubscribeOn(event)
             })
 
         }

@@ -46,10 +46,12 @@
         </activity>
         <activity android:name=".CreatedNewEventActivity" />
         <activity android:name=".EventList.EventListActivity" />
-        <activity
-            android:name=".lActivity"
-            android:label="@string/title_activity_l"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <service android:name=".Notification.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <receiver android:name=".Notification.ActionNotificationBtnReceiver" />
     </application>
 
 </manifest>

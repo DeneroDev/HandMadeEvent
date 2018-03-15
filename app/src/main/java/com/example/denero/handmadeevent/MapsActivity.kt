@@ -2,40 +2,34 @@ package com.example.denero.handmadeevent
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import android.widget.Toast
-
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.Toast
 import com.example.denero.handmadeevent.EventList.EventListActivity
 import com.example.denero.handmadeevent.model.Event
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_created_new_event.*
-import java.security.Permission
-import java.util.jar.Manifest
 
 
 class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarkerDragListener,GoogleMap.OnCameraIdleListener,GoogleMap.OnMapClickListener, Parcelable {
@@ -104,15 +98,15 @@ class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarke
         var query:Query = myRef
         query.addChildEventListener(object : ChildEventListener{
             override fun onCancelled(p0: DatabaseError?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
@@ -126,7 +120,7 @@ class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarke
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
         })
 

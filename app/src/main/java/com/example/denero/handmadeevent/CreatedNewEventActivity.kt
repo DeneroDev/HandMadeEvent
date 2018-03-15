@@ -3,24 +3,25 @@ package com.example.denero.handmadeevent
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
-import com.google.android.gms.maps.*
-
-import com.google.android.gms.maps.model.MarkerOptions
+import com.example.denero.handmadeevent.Notification.RetrofitApiHelper
+import com.example.denero.handmadeevent.model.Event
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-
-import kotlinx.android.synthetic.main.activity_created_new_event.*
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.activity_created_new_event.*
 import java.util.*
-import android.support.v4.app.ActivityCompat
-import com.example.denero.handmadeevent.model.Event
 
 
 class CreatedNewEventActivity : AppCompatActivity(),
@@ -170,9 +171,14 @@ class CreatedNewEventActivity : AppCompatActivity(),
                 if (newEvent.dateStart > newEvent.dateExpiration) {
                     Toast.makeText(applicationContext, "Start date can't be a late end date", Toast.LENGTH_SHORT).show()
                 } else {
-                    val myRef = FirebaseDatabase.getInstance().reference.child(getString(R.string.name_table_event_db))
-                    myRef.push().setValue(newEvent)
-                     finish() //запись созданна
+                    val myRef = FirebaseDatabase.getInstance().reference.child("Events")
+                    var pushRef = myRef.push()
+                    pushRef.setValue(newEvent)
+
+                    val retrofitApiHelper = RetrofitApiHelper()
+                    retrofitApiHelper.sendStartNotification(newEvent, pushRef.key, Calendar.getInstance())
+
+                    finish() //запись созданна
                 }
             }
 
@@ -199,7 +205,8 @@ class CreatedNewEventActivity : AppCompatActivity(),
                 locationNewEvent.latitude,
                 locationNewEvent.longitude,
                 fullDateStartNewEvent.timeInMillis,
-                fullDateExpirationNewEvent.timeInMillis)
+                fullDateExpirationNewEvent.timeInMillis,
+                Calendar.getInstance().timeInMillis)
     }
 
     private fun buildLocation(): LatLng {

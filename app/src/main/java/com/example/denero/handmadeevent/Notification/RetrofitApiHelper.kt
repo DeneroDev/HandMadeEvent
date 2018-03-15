@@ -1,9 +1,7 @@
 package com.example.denero.handmadeevent.Notification
 
-import android.provider.ContactsContract
-import android.util.EventLog
 import android.util.Log
-import com.example.denero.handmadeevent.Event
+import com.example.denero.handmadeevent.model.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,14 +12,11 @@ import java.util.*
  */
 
 //Создание(отсылка запроса сервер) уведомления о начале эвента.
-class RetrofitApiHelper(
-        private var event: Event,
-        private var event_id : String,
-        private var calendar: Calendar ) {
+class RetrofitApiHelper() {
 
     val TAG = "RetroApiHelper"
 
-    fun sendStartNotification(){
+    fun sendStartNotification(event: Event, event_id : String, calendar: Calendar){
         var client = RetrofitApiService.create()
 
         var result = client.startNotificationPostRequest(
