@@ -2,6 +2,7 @@ package com.example.denero.handmadeevent.EventList
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_display_full_event.*
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -74,6 +76,16 @@ class DisplayFullEventFragment : Fragment() {
         tv_full_event_description.text = event.description
         tv_full_event_date_start.text = getTimeString(event.dateStart)
         tv_full_event_date_expiration.text = getTimeString(event.dateExpiration)
+        if (!event.uriImage.isEmpty()){
+            Picasso.with(context).load(event.uriImage)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .config(Bitmap.Config.RGB_565)
+                    .fit()
+                    .centerCrop()
+                    .into(image_full_event)
+
+        }
 
     }
 

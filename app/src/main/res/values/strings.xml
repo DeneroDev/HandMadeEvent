@@ -39,7 +39,10 @@
 
     <integer name="number_event_records_for_sample">60</integer>
     <string name="title_activity_l">lActivity</string>
-    <string name="key_signed_events_fragment">SignedEvents</string>
+    <string name="key_signed_event_fragment">SignedEvents</string>
     <string name="text_btn_unsubscribe_item_signed_event">Unsubscribe</string>
     <string name="tag_separate_query_db">/</string>
+    <string name="key_mission_open_fragment">openFragment</string>
+    <string name="key_my_event_fragment">MyEvent</string>
+    <string name="text_btn_remove_item_my_event">Remove</string>
 </resources>

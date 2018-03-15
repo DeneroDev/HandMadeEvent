@@ -13,7 +13,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -21,21 +20,15 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.util.Log
-import android.view.MenuItem
 import com.example.denero.handmadeevent.EventList.EventListActivity
 import com.example.denero.handmadeevent.model.Event
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_created_new_event.*
-import java.security.Permission
-import java.util.jar.Manifest
 
 
 class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarkerDragListener,GoogleMap.OnCameraIdleListener,GoogleMap.OnMapClickListener, Parcelable {
@@ -131,19 +124,17 @@ class MapsActivity() : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarke
         })
 
 
-        bottom_navigation.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
-            override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                when(item.itemId){
-                    R.id.action_add_event -> {startActivity(Intent(applicationContext,CreatedNewEventActivity::class.java))}
-                    R.id.action_all_event -> {startActivity(Intent(applicationContext,EventListActivity::class.java))}
-                    R.id.action_open_favorites -> {startActivity(Intent(applicationContext
-                            ,EventListActivity::class.java)
-                                .putExtra(getString(R.string.key_signed_events_fragment)
-                                    ,getString(R.string.key_signed_events_fragment)))}
-                }
-                return false
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId){
+                R.id.action_add_event -> {startActivity(Intent(applicationContext,CreatedNewEventActivity::class.java))}
+                R.id.action_all_event -> {startActivity(Intent(applicationContext,EventListActivity::class.java))}
+                R.id.action_open_favorites -> {startActivity(Intent(applicationContext
+                        ,EventListActivity::class.java)
+                        .putExtra(getString(R.string.key_mission_open_fragment)
+                                ,getString(R.string.key_signed_event_fragment)))}
             }
-        })
+            false
+        }
 
     }
 

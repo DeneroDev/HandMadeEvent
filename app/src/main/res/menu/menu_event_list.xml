@@ -12,5 +12,9 @@
         android:orderInCategory="100"
         android:title="Signed events"
         app:showAsAction="never" />
-
+    <item
+        android:id="@+id/show_my_event"
+        android:orderInCategory="100"
+        android:title="My events"
+        app:showAsAction="never" />
 </menu>

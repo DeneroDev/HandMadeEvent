@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
@@ -79,7 +80,7 @@ class SignedEventFragment : Fragment()
         this.NAME_TABLE_EVENT_DB = activity!!.getString(R.string.name_table_event_db)
 
         recycler_list.layoutManager = LinearLayoutManager(activity!!.applicationContext)
-        adapter = SignedEventAdapter(this, mutableListOf(hashMapOf()))
+        adapter = SignedEventAdapter(this, mutableListOf<HashMap<String, Event>>(),activity!!.applicationContext)
         recycler_list.adapter = adapter
 
         val myRef = FirebaseDatabase.getInstance().getReference(NAME_TABLE_ATTENDEES_EVENT_DB)
@@ -91,12 +92,14 @@ class SignedEventFragment : Fragment()
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 attendeesEventList?.clear()
+                pushLog("dataSnapshot.value 1", dataSnapshot.value.toString())
                 if (dataSnapshot.value == null) {
-                    mListener!!.closeMe(activity!!.getString(R.string.key_signed_events_fragment)) // падает
+                    adapter!!.updateDate(mutableListOf<HashMap<String, Event>>())
+//                    Toast.makeText(activity!!.applicationContext,"You do not have signed events",Toast.LENGTH_SHORT).show() //падает хз
                 } else {
 
                     for (idEvent in dataSnapshot.children) {
-//
+
                         attendeesEventList!!.add(idEvent.key)
                     }
 
@@ -145,7 +148,6 @@ class SignedEventFragment : Fragment()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_signed_event, container, false)
     }
-
 
     override fun onDetach() {
         super.onDetach()

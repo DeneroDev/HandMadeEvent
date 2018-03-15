@@ -13,7 +13,7 @@ open class Event(){
     var longitude: Double = 0.0
     var dateStart: Long = 0
     var dateExpiration: Long = 0
-    var createdTimeInMillis : Long = System.currentTimeMillis()
+    var createdTimeInMillis : Long = 0
     var uriImage: String =""
 
     constructor( userCreated: String,
@@ -34,4 +34,13 @@ open class Event(){
         this.createdTimeInMillis=createdTimeInMillis
     }
 
+    override fun toString(): String = "\n"+
+            this.userCreated + "\n" +
+            this.titleEvent + "\n" +
+            this.latitude + "\n" +
+            this.longitude + "\n" +
+            this.dateStart + "\n" +
+            this.dateExpiration + "\n" +
+            this.createdTimeInMillis + "\n" +
+            this.uriImage + "\n"
 }

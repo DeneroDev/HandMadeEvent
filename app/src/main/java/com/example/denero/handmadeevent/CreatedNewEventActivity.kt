@@ -1,6 +1,7 @@
 package com.example.denero.handmadeevent
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
@@ -23,6 +24,7 @@ import android.support.v4.app.ActivityCompat
 import android.view.View
 import com.example.denero.handmadeevent.model.Event
 import android.graphics.Bitmap
+import com.example.denero.handmadeevent.EventList.EventListActivity
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -201,9 +203,18 @@ init {
             chooseImageManager()
         })
 
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId){
+                R.id.action_add_event -> {false}
+                R.id.action_all_event -> {startActivity(Intent(applicationContext, EventListActivity::class.java))}
+                R.id.action_open_favorites -> {startActivity(Intent(applicationContext
+                        , EventListActivity::class.java)
+                        .putExtra(getString(R.string.key_mission_open_fragment)
+                                ,getString(R.string.key_signed_event_fragment)))}
+            }
+            false
+        }
         btn_created_new_event.setOnClickListener({
-
-
             if (!checkDataDisplay()) {
                 Toast.makeText(applicationContext, "Not all fields are filled", Toast.LENGTH_SHORT).show()
             } else {
@@ -234,7 +245,7 @@ init {
                         myRef.push().setValue(newEvent)
                     }
 
-// finish()
+                    // finish()
                 }
             }
 

@@ -101,11 +101,11 @@ class AllEventListFragment : Fragment()
         this.NAME_TABLE_EVENT_DB = activity!!.getString(R.string.name_table_event_db)
 
         recycler_list.layoutManager = LinearLayoutManager(activity!!.applicationContext)
-        adapter = AllEventAdapter(this, mutableListOf(hashMapOf()))
+        adapter = AllEventAdapter(this, mutableListOf<HashMap<String, Event>>(),activity!!.applicationContext)
         recycler_list.adapter = adapter
 
         val myRef = FirebaseDatabase.getInstance().reference
-//TODO: выводит не все записи!!!
+//TODO: выводит 60 записей
         myRef.child(NAME_TABLE_EVENT_DB).limitToFirst(NUMBER_EVENT_RECORDS_FOR_SAMPLE).addChildEventListener(this)
 
         myRef.child(NAME_TABLE_EVENT_DB).limitToFirst(NUMBER_EVENT_RECORDS_FOR_SAMPLE).addValueEventListener(object : ValueEventListener {
@@ -118,6 +118,7 @@ class AllEventListFragment : Fragment()
                 for (singleSnapshot in dataSnapshot.children) {
                     eventList!!.add(hashMapOf(singleSnapshot.key to singleSnapshot.getValue(Event::class.java) as Event))
                 }
+
                 adapter!!.updateDate(eventList)
             }
         })

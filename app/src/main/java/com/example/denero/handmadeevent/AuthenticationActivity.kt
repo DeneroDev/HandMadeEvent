@@ -18,8 +18,7 @@ class AuthenticationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
-
-
+//        FirebaseAuth.getInstance().signOut()
 
         if (FirebaseAuth.getInstance().currentUser == null) {
 
@@ -41,8 +40,8 @@ class AuthenticationActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG)
                     .show()
             // TODO: start Map
-//            startActivity(Intent(applicationContext, MapsActivity::class.java))
-            startActivity(Intent(applicationContext, CreatedNewEventActivity::class.java))
+            startActivity(Intent(applicationContext, MapsActivity::class.java))
+//            startActivity(Intent(applicationContext, CreatedNewEventActivity::class.java))
         }
     }
 

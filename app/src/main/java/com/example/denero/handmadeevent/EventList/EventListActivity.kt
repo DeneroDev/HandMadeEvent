@@ -1,6 +1,7 @@
 package com.example.denero.handmadeevent.EventList
 
 
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,11 +11,16 @@ import android.view.MenuItem
 import com.example.denero.handmadeevent.R
 
 import java.io.Serializable
-
+//TODO:переименуй интерфейсы
 class EventListActivity : AppCompatActivity()
         , AllEventListFragment.OnAllEventFragmentListener
         , DisplayFullEventFragment.OnDisplayFullEventFragmentListener
-        , SignedEventFragment.OnFragmentInteractionListener {
+        , SignedEventFragment.OnFragmentInteractionListener
+        , MyEventListFragment.OnFragmentInteractionListener {
+
+    override fun onFragmentInteraction(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     override fun closeMe(keyFragment: String) {
@@ -37,19 +43,31 @@ class EventListActivity : AppCompatActivity()
         setContentView(R.layout.activity_event_list)
 
         //TODO: добавить человеческое условие
-        if (intent.hasExtra(getString(R.string.key_id_event_selected))) {
-            val bundle = Bundle()
-            bundle.putString(getString(R.string.key_id_event_selected), intent.getStringExtra(getString(R.string.key_id_event_selected)))
-            displayFragment(getString(R.string.key_full_event_fragment), bundle = bundle)
-        } else {
-            if (intent.hasExtra(getString(R.string.key_signed_events_fragment))){
-                displayFragment(getString(R.string.key_signed_events_fragment))
-            } else {
-                displayFragment(getString(R.string.key_all_event_fragment))
+        if (intent.hasExtra(getString(R.string.key_mission_open_fragment))) {
+            when (intent.getStringExtra(getString(R.string.key_mission_open_fragment))) {
+                getString(R.string.key_signed_event_fragment) -> {
+                    displayFragment(getString(R.string.key_signed_event_fragment))
+                }
+                getString(R.string.key_full_event_fragment) -> {
+                    if (intent.hasExtra(getString(R.string.key_id_event_selected))) {
+                        val bundle = Bundle()
+                        bundle.putString(getString(R.string.key_id_event_selected), intent.getStringExtra(getString(R.string.key_id_event_selected)))
+                        displayFragment(getString(R.string.key_full_event_fragment), bundle = bundle)
+                    } else {
+                        displayFragment(getString(R.string.key_all_event_fragment))
+                    }
+                }
+                getString(R.string.key_my_event_fragment) -> {
+                    displayFragment(getString(R.string.key_my_event_fragment))
+                }
+                else -> {
+                    displayFragment(getString(R.string.key_all_event_fragment))
+                }
             }
-
-
+        } else {
+            displayFragment(getString(R.string.key_all_event_fragment))
         }
+
 
     }
 
@@ -67,7 +85,11 @@ class EventListActivity : AppCompatActivity()
                 return true
             }
             R.id.show_signed_event -> {
-                displayFragment(getString(R.string.key_signed_events_fragment))
+                displayFragment(getString(R.string.key_signed_event_fragment))
+                return true
+            }
+            R.id.show_my_event -> {
+                displayFragment(getString(R.string.key_my_event_fragment))
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -79,11 +101,12 @@ class EventListActivity : AppCompatActivity()
 
         when (keyFragment) {
             getString(R.string.key_all_event_fragment) -> fragment = AllEventListFragment()
-            getString(R.string.key_signed_events_fragment) -> fragment = SignedEventFragment()
+            getString(R.string.key_signed_event_fragment) -> fragment = SignedEventFragment()
             getString(R.string.key_full_event_fragment) -> {
                 fragment = DisplayFullEventFragment()
                 transaction.addToBackStack(getString(R.string.key_full_event_fragment))
             }
+            getString(R.string.key_my_event_fragment) -> fragment = MyEventListFragment()
         }
 
         fragment!!.arguments = bundle

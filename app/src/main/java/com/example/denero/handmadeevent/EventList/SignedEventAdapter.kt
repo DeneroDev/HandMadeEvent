@@ -1,5 +1,7 @@
 package com.example.denero.handmadeevent.EventList
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -7,20 +9,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_signed_event.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.io.Serializable
+
 /**
  * Created by goga747 on 11.03.2018.
  */
 
 
 class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
-                      var data: MutableList<HashMap<String, Event>>?)
+                         var data: MutableList<HashMap<String, Event>>?,
+                         var context: Context)
     : RecyclerView.Adapter<SignedEventAdapter.MyViewHolder>() {
     private val LOG_TAG = "GOT"
     private val LOG_HEAD = SignedEventAdapter::class.java.simpleName
@@ -58,9 +64,21 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
             })
 
             holder.btnUnsubscribe.setOnClickListener(View.OnClickListener {
-                pushLog("Click ${holder.id}", "subscribe")
+                pushLog("Click ${holder.id}", "unSubscribe")
                 mLister.getIdSelectedEventForUnsubscribe(holder.id)
             })
+            if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()){
+                Picasso.with(context).load(data?.get(position)!![holder.id]?.uriImage)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .config(Bitmap.Config.RGB_565)
+                        .fit()
+                        .centerCrop()
+                        .into(holder.image)
+
+            }
+
+
 
         }
     }
@@ -84,6 +102,7 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
         var timeStart: TextView = view.tv_time_start_event_item_signed_event
         var btnUnsubscribe: Button = view.btn_unsubscribe_item_signed_event
         var mainLayout: ConstraintLayout = view.main_layout_item_signed_event
+        var image: ImageView = view.image_item_event_signed
 
         lateinit var id: String
 
