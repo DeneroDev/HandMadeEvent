@@ -1,13 +1,14 @@
 package com.example.denero.handmadeevent
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.location.Location
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.Toast
-import com.example.denero.handmadeevent.Notification.RetrofitApiHelper
 import com.google.android.gms.maps.*
 
 import com.google.android.gms.maps.model.MarkerOptions
@@ -18,6 +19,8 @@ import kotlinx.android.synthetic.main.activity_created_new_event.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
+import android.support.v4.app.ActivityCompat
+import com.example.denero.handmadeevent.model.Event
 
 
 class CreatedNewEventActivity : AppCompatActivity(),
@@ -85,14 +88,21 @@ class CreatedNewEventActivity : AppCompatActivity(),
         return false
     }
 
+    private val LOCATION_PERMISSION_REQUEST_ID: Int = 3
+
     @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap?) {
         mMap = map
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap!!.setOnMyLocationButtonClickListener(this)
+            mMap!!.setOnMyLocationClickListener(this)
+            mMap!!.isMyLocationEnabled = true
+            mMap!!.uiSettings.isMyLocationButtonEnabled = true
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_ID)
+        }
 
-        mMap!!.setOnMyLocationButtonClickListener(this)
-        mMap!!.setOnMyLocationClickListener(this)
-        mMap!!.isMyLocationEnabled = true
-        mMap!!.uiSettings.isMyLocationButtonEnabled = true
 
         mMap!!.setOnMapClickListener({ point ->
             mMap!!.clear()
@@ -103,6 +113,30 @@ class CreatedNewEventActivity : AppCompatActivity(),
             closeFragment(getString(R.string.tag_maps_fragment))
 
         })
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_ID -> {
+
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    mMap!!.setOnMyLocationButtonClickListener(this)
+                    mMap!!.setOnMyLocationClickListener(this)
+                    mMap!!.isMyLocationEnabled = true
+                    mMap!!.uiSettings.isMyLocationButtonEnabled = true
+                } else {
+
+                    Toast.makeText(applicationContext, "You have chosen to wander around the map and the settings menu", Toast.LENGTH_SHORT).show()
+
+                }
+                return
+            }
+            else -> {
+
+            }
+        }
     }
 
     private fun setLocationDisplay(point: LatLng?) {
@@ -136,14 +170,9 @@ class CreatedNewEventActivity : AppCompatActivity(),
                 if (newEvent.dateStart > newEvent.dateExpiration) {
                     Toast.makeText(applicationContext, "Start date can't be a late end date", Toast.LENGTH_SHORT).show()
                 } else {
-                    val myRef = FirebaseDatabase.getInstance().reference.child("Events")
-                    var pushRef = myRef.push()
-                    pushRef.setValue(newEvent)
-                    // finish() запись созданна
-
-                    val retrofitApiHelper = RetrofitApiHelper(newEvent, pushRef.key, Calendar.getInstance())
-                    retrofitApiHelper.sendStartNotification()
-
+                    val myRef = FirebaseDatabase.getInstance().reference.child(getString(R.string.name_table_event_db))
+                    myRef.push().setValue(newEvent)
+                     finish() //запись созданна
                 }
             }
 
@@ -157,21 +186,20 @@ class CreatedNewEventActivity : AppCompatActivity(),
             or (tv_new_event_time_start.text == "")
             or (tv_new_event_time_expiration.text == ""))
 
-    //Добавил Calendar.getInstance().timeInMillis в конструктор, т.к. изменился класс Event
+
     private fun buildDataForWriteInDB(): Event {
         val titleNewEvent = edit_text_new_event_title.text.toString()
         val descriptionNewEvent = edit_text_new_event_description.text.toString()
         val fullDateStartNewEvent: Calendar = buildDateStart()
         val fullDateExpirationNewEvent: Calendar = buildDateExpiration()
         val locationNewEvent: LatLng = buildLocation()
-        return Event(FirebaseAuth.getInstance().currentUser!!.email!!,
+        return Event(FirebaseAuth.getInstance().currentUser!!.uid,
                 titleNewEvent,
                 descriptionNewEvent,
                 locationNewEvent.latitude,
                 locationNewEvent.longitude,
                 fullDateStartNewEvent.timeInMillis,
-                fullDateExpirationNewEvent.timeInMillis,
-                Calendar.getInstance().timeInMillis)
+                fullDateExpirationNewEvent.timeInMillis)
     }
 
     private fun buildLocation(): LatLng {

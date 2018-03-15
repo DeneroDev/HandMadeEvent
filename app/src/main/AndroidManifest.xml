@@ -45,19 +45,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreatedNewEventActivity" />
-        <activity android:name=".MainWindowActivity" />
         <activity android:name=".EventList.EventListActivity" />
-        <activity android:name=".EventList.EventFullInformationActivity" />
-
-        <service android:name=".Notification.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <activity android:name=".MyCreatedEventList.MyCreatedEventListActivity" />
-        <activity android:name=".MyCreatedEventList.AdministrationActivity"></activity>
-        <receiver android:name=".ActionNotificationBtnReceiver" />
+        <activity
+            android:name=".lActivity"
+            android:label="@string/title_activity_l"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
