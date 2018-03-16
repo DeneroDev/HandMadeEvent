@@ -245,7 +245,7 @@ init {
                         myRef.push().setValue(newEvent)
                     }
 
-                    // finish()
+                     finish()
                 }
             }
 

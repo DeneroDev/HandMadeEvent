@@ -41,7 +41,8 @@ class AuthenticationActivity : AppCompatActivity() {
                     .show()
             // TODO: start Map
             startActivity(Intent(applicationContext, MapsActivity::class.java))
-//            startActivity(Intent(applicationContext, CreatedNewEventActivity::class.java))
+//            startActivity(Intent(applicationContext, EventListActivity::class.java)
+//                    .putExtra(getString(R.string.key_mission_open_fragment),getString(R.string.key_my_event_fragment)))
         }
     }
 

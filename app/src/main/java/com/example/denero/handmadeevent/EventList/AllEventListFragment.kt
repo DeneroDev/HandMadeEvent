@@ -44,16 +44,16 @@ class AllEventListFragment : Fragment()
         mListenerAllEvent!!.getEventSelectedId(selectEventId)
     }
 
-    override fun onCancelled(p0: DatabaseError?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onCancelled(snapshot: DatabaseError?) {
+        pushLog("onCancelled", snapshot.toString())
     }
 
-    override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onChildMoved(snapshot: DataSnapshot?, p1: String?) {
+        pushLog("onChildMoved", snapshot.toString())
     }
 
-    override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onChildChanged(snapshot: DataSnapshot?, p1: String?) {
+        pushLog("onChildChanged", snapshot.toString())
     }
 
     override fun onChildAdded(snapshot: DataSnapshot?, p1: String?) {
@@ -116,7 +116,9 @@ class AllEventListFragment : Fragment()
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 eventList?.clear()
                 for (singleSnapshot in dataSnapshot.children) {
-                    eventList!!.add(hashMapOf(singleSnapshot.key to singleSnapshot.getValue(Event::class.java) as Event))
+                    val event =  singleSnapshot.getValue(Event::class.java) as Event
+                    if (event.userCreated != FirebaseAuth.getInstance().currentUser!!.uid)
+                    eventList!!.add(hashMapOf(singleSnapshot.key to event))
                 }
 
                 adapter!!.updateDate(eventList)

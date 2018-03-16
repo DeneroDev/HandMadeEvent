@@ -1,6 +1,7 @@
 package com.example.denero.handmadeevent.EventList
 
 
+import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,15 +9,17 @@ import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.example.denero.handmadeevent.CreatedNewEventActivity
 import com.example.denero.handmadeevent.R
+import kotlinx.android.synthetic.main.activity_created_new_event.*
 
 import java.io.Serializable
 //TODO:переименуй интерфейсы
 class EventListActivity : AppCompatActivity()
         , AllEventListFragment.OnAllEventFragmentListener
         , DisplayFullEventFragment.OnDisplayFullEventFragmentListener
-        , SignedEventFragment.OnFragmentInteractionListener
-        , MyEventListFragment.OnFragmentInteractionListener {
+        , SignedEventFragment.OnSignedEventFragmentListener
+        , MyEventListFragment.OnMyEventListFragmentListener {
 
     override fun onFragmentInteraction(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -68,7 +71,14 @@ class EventListActivity : AppCompatActivity()
             displayFragment(getString(R.string.key_all_event_fragment))
         }
 
-
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId){
+                R.id.action_add_event -> {startActivity(Intent(applicationContext,CreatedNewEventActivity::class.java))}
+                R.id.action_all_event -> { displayFragment(getString(R.string.key_all_event_fragment))}
+                R.id.action_open_favorites -> { displayFragment(getString(R.string.key_signed_event_fragment))}
+            }
+            false
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
