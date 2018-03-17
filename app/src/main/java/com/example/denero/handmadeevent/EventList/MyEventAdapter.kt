@@ -70,7 +70,7 @@ class MyEventAdapter(var mLister: onMyEventAdapterListener,
 
             if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()){
                 Picasso.with(context).load(data?.get(position)!![holder.id]?.uriImage)
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(android.R.drawable.ic_menu_report_image)
                         .error(R.mipmap.ic_launcher)
                         .config(Bitmap.Config.RGB_565)
                         .fit()

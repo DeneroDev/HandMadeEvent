@@ -45,4 +45,9 @@
     <string name="key_mission_open_fragment">openFragment</string>
     <string name="key_my_event_fragment">MyEvent</string>
     <string name="text_btn_remove_item_my_event">Remove</string>
+    <string name="key_year_map_date">year</string>
+    <string name="key_month_map_date">month</string>
+    <string name="key_day_map_date">day</string>
+    <string name="key_hours_map_date">hours</string>
+    <string name="key_minute_map_date">minute</string>
 </resources>
