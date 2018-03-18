@@ -117,15 +117,15 @@ class AllEventListFragment : Fragment()
 
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
                         attendeesEventList?.clear()
-                        pushLog("dataSnapshot.value 1", dataSnapshot!!.value.toString())
+                        pushLog("dataSnapshot.value  ", dataSnapshot!!.value.toString())
                         if (dataSnapshot!!.value != null) {
                             for (idEvent in dataSnapshot.children) {
                                 attendeesEventList!!.add(idEvent.key)
 
                             }
-                            completeDateAdapter()
 
                         }
+                        completeDateAdapter()
                     }
 
                 })
@@ -145,8 +145,8 @@ class AllEventListFragment : Fragment()
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 eventList?.clear()
-                pushLog("onDataChange TUT", dataSnapshot.toString())
-                pushLog("onDataChange attendes",  attendeesEventList.toString())
+                pushLog("AAAAAAAAAA TUT", dataSnapshot.toString())
+                pushLog("BBBBBBBBBBBBBBB attendes",  attendeesEventList.toString())
                 for (singleSnapshot in dataSnapshot.children) {
                     val event = singleSnapshot.getValue(Event::class.java) as Event
 

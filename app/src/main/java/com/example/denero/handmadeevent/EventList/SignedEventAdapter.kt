@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.denero.handmadeevent.Notification.NotificationSubscription
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import com.squareup.picasso.Picasso
@@ -66,6 +67,9 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
             holder.btnUnsubscribe.setOnClickListener(View.OnClickListener {
                 pushLog("Click ${holder.id}", "unSubscribe")
                 mLister.getIdSelectedEventForUnsubscribe(holder.id)
+
+                var event = data?.get(position)!![holder.id] as Event
+                NotificationSubscription().unsubscribeOn(event)
             })
             if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()) {
                 Picasso.with(context).load(data?.get(position)!![holder.id]?.uriImage)

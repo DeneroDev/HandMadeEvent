@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.denero.handmadeevent.EventList.EventListActivity
+import com.example.denero.handmadeevent.Notification.RetrofitApiHelper
 import com.example.denero.handmadeevent.model.Event
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
@@ -273,8 +274,9 @@ class CreatedNewEventActivity : AppCompatActivity(),
                     Toast.makeText(applicationContext, "Start date can't be a late end date", Toast.LENGTH_SHORT).show()
                 } else {
                     this.myRef = FirebaseDatabase.getInstance().reference.child(getString(R.string.name_table_event_db))
+                    val idCreatedEvent = this.myRef.push().key
                     if (eventImageUri.toString() != "") {
-                        val idCreatedEvent = this.myRef.push().key
+
 
                         val photoRef: StorageReference = FirebaseStorage.getInstance().getReference("event_photos").child(idCreatedEvent)
 
@@ -291,8 +293,11 @@ class CreatedNewEventActivity : AppCompatActivity(),
                                 }
 
                     } else {
-                        myRef.push().setValue(newEvent)
+                        myRef.child(idCreatedEvent).setValue(newEvent)
                     }
+
+                    val retrofitApiHelper = RetrofitApiHelper()
+                    retrofitApiHelper.sendStartNotification(newEvent, idCreatedEvent, Calendar.getInstance())
 
                     finish()
                 }
