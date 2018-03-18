@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_btn_remove_item_my_event">Удалить</string>
+    <string name="text_btn_subscribe_item">Подписаться</string>
+
+    <string name="text_btn_time_picker">Выбор времени</string>
+    <string name="text_btn_data_picker">Выбор даты</string>
+    <string name="hint_edit_text_title">Название</string>
+    <string name="hint_tv_location">Место</string>
+    <string name="text_btn_created_new_event">Создать</string>
+    <string name="hint_tv_start_date">Дата начала</string>
+    <string name="hint_tv_expiration_date">Дата конца</string>
+    <string name="hint_tv_start_time">Время начала</string>
+    <string name="hint_tv_expiration_time">Время конца</string>
+    <string name="hint_tv_description">Описание</string>
+    <string name="text_btn_unsubscribe_item_signed_event">Отписаться</string>
+
+    <string name="weak_day_1">Понедельник</string>
+    <string name="weak_day_2">Вторник</string>
+    <string name="weak_day_3">Среда</string>
+    <string name="weak_day_4">Четверг</string>
+    <string name="weak_day_5">Пятница</string>
+    <string name="weak_day_6">Суббота</string>
+    <string name="weak_day_7">Воскресенье</string>
+</resources>

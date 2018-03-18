@@ -6,157 +6,158 @@
     android:layout_height="match_parent"
     tools:context="com.example.denero.handmadeevent.CreatedNewEventActivity">
 
-   <android.support.constraint.ConstraintLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       app:layout_constraintBottom_toBottomOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent">
 
-      <EditText
-          android:id="@+id/edit_text_new_event_title"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
-          android:layout_marginStart="8dp"
-          android:layout_marginTop="8dp"
-          android:hint="@string/hint_edit_text_title"
-          app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.0"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/tv_new_event_location" />
+    <EditText
+        android:id="@+id/edit_text_new_event_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-      <TextView
-          android:id="@+id/tv_new_event_location"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
-          android:layout_marginStart="8dp"
-          android:layout_marginTop="8dp"
-          android:gravity="center"
-          android:clickable="true"
-          android:hint="@string/hint_tv_location"
-          android:inputType="none"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="1.0"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          tools:ignore="MissingConstraints" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:hint="@string/hint_edit_text_title"
+        app:layout_constraintBottom_toTopOf="@+id/edit_text_new_event_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.17000002" />
 
-      <Button
-          android:id="@+id/btn_created_new_event"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="28dp"
-          android:layout_marginEnd="8dp"
-          android:layout_marginStart="8dp"
-          android:layout_marginTop="8dp"
-          android:text="@string/text_btn_created_new_event"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintVertical_bias="0.8" />
+    <Button
+        android:id="@+id/tv_new_event_location"
+        android:layout_width="256dp"
+        android:layout_height="32dp"
+        android:background="@drawable/button_common"
+        android:clickable="true"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:inputType="none"
+        android:text="Set Locale"
+        app:layout_constraintBottom_toTopOf="@+id/image_new_event"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_new_event_time_start"
+        app:layout_constraintVertical_bias="0.51"
+        tools:ignore="MissingConstraints" />
 
 
-      <LinearLayout
-          android:id="@+id/linearLayout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="32dp"
-          android:layout_marginEnd="8dp"
-          android:layout_marginStart="8dp"
-          android:orientation="vertical"
-          app:layout_constraintBottom_toTopOf="@+id/edit_text_new_event_description"
-          app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
-          app:layout_constraintHorizontal_bias="0.52"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/edit_text_new_event_title">
+    <Button
+        android:id="@+id/btn_created_new_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/button_common"
+        android:text="@string/text_btn_created_new_event"
 
-         <TextView
-             android:id="@+id/tv_new_event_date_start"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:clickable="true"
-             android:hint="@string/hint_tv_start_date"
-             android:paddingBottom="32dp" />
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_new_event" />
 
-         <TextView
-             android:id="@+id/tv_new_event_date_expiration"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:clickable="true"
-             android:hint="@string/hint_tv_expiration_date" />
-      </LinearLayout>
 
-      <LinearLayout
-          android:id="@+id/linearLayout2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="32dp"
-          android:layout_marginEnd="8dp"
-          android:layout_marginStart="8dp"
-          android:layout_marginTop="8dp"
-          android:orientation="vertical"
-          app:layout_constraintBottom_toTopOf="@+id/edit_text_new_event_description"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toEndOf="@+id/linearLayout"
-          app:layout_constraintTop_toBottomOf="@+id/edit_text_new_event_title"
-          app:layout_constraintVertical_bias="0.0">
+    <Button
+        android:id="@+id/tv_new_event_date_start"
+        android:layout_width="160dp"
+        android:padding="8dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_common"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_calendar"
+        android:gravity="center"
+        android:text="@string/hint_tv_start_date"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toStartOf="@id/tv_new_event_date_expiration"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_new_event_description" />
 
-         <TextView
-             android:id="@+id/tv_new_event_time_start"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:clickable="true"
-             android:hint="@string/hint_tv_start_time"
-             android:paddingBottom="32dp"
-             app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/tv_new_event_date_expiration"
+        android:layout_width="160dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:background="@drawable/button_common"
+        android:clickable="true"
+        android:textColor="@android:color/white"
+        android:drawableLeft="@drawable/ic_calendar"
+        android:text="@string/hint_tv_expiration_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_new_event_date_start"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_new_event_description" />
 
-         <TextView
-             android:id="@+id/tv_new_event_time_expiration"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:clickable="true"
-             android:hint="@string/hint_tv_expiration_time" />
-      </LinearLayout>
 
-      <EditText
-          android:id="@+id/edit_text_new_event_description"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="152dp"
-          android:layout_marginTop="3dp"
-          android:hint="@string/hint_tv_description"
-          app:layout_constraintBottom_toTopOf="@+id/btn_created_new_event"
-          app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-          tools:ignore="MissingConstraints"
-          tools:layout_editor_absoluteX="16dp" />
-   </android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/tv_new_event_time_start"
+        android:layout_width="160dp"
+        android:layout_height="32dp"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_common"
+        android:clickable="true"
+        android:textColor="@android:color/white"
+        android:drawableLeft="@drawable/ic_clock"
+        android:text="@string/hint_tv_start_time"
+        app:layout_constraintEnd_toStartOf="@id/tv_new_event_time_expiration"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_new_event_date_start" />
 
-   <FrameLayout
-       android:id="@+id/my_container"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       tools:ignore="MissingConstraints"
-       tools:layout_editor_absoluteX="0dp"
-       tools:layout_editor_absoluteY="4dp" />
+    <Button
+        android:id="@+id/tv_new_event_time_expiration"
+        android:layout_width="160dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_common"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_clock"
+        android:text="@string/hint_tv_expiration_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_new_event_time_start"
+        app:layout_constraintTop_toBottomOf="@id/tv_new_event_date_expiration" />
 
-   <android.support.design.widget.BottomNavigationView
-       android:id="@+id/bottom_navigation"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       app:itemBackground="@color/colorPrimary"
-       app:itemIconTint="#FFFFFF"
-       app:itemTextColor="#FFFFFF"
-       app:layout_constraintBottom_toBottomOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintStart_toStartOf="parent"
-       app:menu="@menu/menu_bottom_navigation">
 
-   </android.support.design.widget.BottomNavigationView>
+    <EditText
+        android:id="@+id/edit_text_new_event_description"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:hint="@string/hint_tv_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_new_event_title"
+        tools:ignore="MissingConstraints" />
 
+    <ImageView
+        android:id="@+id/image_new_event"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:clickable="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/btn_created_new_event"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_new_event_location"
+        app:srcCompat="@android:drawable/ic_menu_report_image" />
+
+
+    <FrameLayout
+        android:id="@+id/my_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+         />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        layout="@layout/bottom_navigation_view"/>
 
 </android.support.constraint.ConstraintLayout>

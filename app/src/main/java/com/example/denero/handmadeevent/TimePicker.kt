@@ -24,7 +24,7 @@ class TimePicker : DialogFragment(), TimePickerDialog.OnTimeSetListener {
     private lateinit var mission: String
 
     interface onTimeFragmentListener {
-        fun getTime(mission: String, time: String)
+        fun getTime(mission: String, time: MutableMap<String, String>)
     }
 
 
@@ -71,7 +71,10 @@ class TimePicker : DialogFragment(), TimePickerDialog.OnTimeSetListener {
     }
 
     override fun onTimeSet(view: TimePicker, hours: Int, minute: Int) {
-        mListener!!.getTime(mission,"$hours:$minute")
+        var timeMap = mutableMapOf<String,String>()
+        timeMap.put(getString(R.string.key_hours_map_date),hours.toString())
+        timeMap.put(getString(R.string.key_minute_map_date),minute.toString())
+        mListener!!.getTime(mission,timeMap)
     }
 
 }

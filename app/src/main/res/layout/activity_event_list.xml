@@ -3,11 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.denero.handmadeevent.EventList.EventListActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/frame_layout_event_list"/>
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
+        layout="@layout/bottom_navigation_view"/>
 </android.support.constraint.ConstraintLayout>
