@@ -128,7 +128,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun removeRecordAttendees(selectEventId: String) {
         if (selectEventId!="") {
             val refAttendees = FirebaseDatabase.getInstance().reference
-            refAttendees.child(getString(R.string.name_table_event_db))
+            refAttendees.child(getString(R.string.name_table_attendees_event_db))
                     .orderByChild(selectEventId)
                     .equalTo(selectEventId)
                     .addChildEventListener(object : ChildEventListener {
@@ -148,7 +148,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
                             FirebaseDatabase.getInstance().reference
-                                    .child(getString(R.string.name_table_event_db)
+                                    .child(getString(R.string.name_table_attendees_event_db)
                                             + getString(R.string.tag_separate_query_db)
                                             + snapshot!!.key
                                             + getString(R.string.tag_separate_query_db)
