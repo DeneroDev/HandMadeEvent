@@ -3,28 +3,26 @@ package com.example.denero.handmadeevent
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Location
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Toast
-import com.google.android.gms.maps.*
-
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
-
-import kotlinx.android.synthetic.main.activity_created_new_event.*
-import com.google.firebase.auth.FirebaseAuth
-import java.util.*
-import android.support.v4.app.ActivityCompat
 import android.view.View
-import com.example.denero.handmadeevent.model.Event
-import android.graphics.Bitmap
+import android.widget.Toast
 import com.example.denero.handmadeevent.EventList.EventListActivity
+import com.example.denero.handmadeevent.model.Event
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -33,11 +31,14 @@ import com.squareup.picasso.Picasso
 import com.vansuita.pickimage.bean.PickResult
 import com.vansuita.pickimage.bundle.PickSetup
 import com.vansuita.pickimage.dialog.PickImageDialog
+import com.vansuita.pickimage.listeners.IPickCancel
 import com.vansuita.pickimage.listeners.IPickResult
+import kotlinx.android.synthetic.main.activity_created_new_event.*
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
+import java.util.*
 
 //TODO: CreatedNewEventActivity
-/*НЕТ СОХРАНЕНИЯ ПРИ ПОВОРОТЕ
+/*
  сохранять ли сделанные фото?
 */
 class CreatedNewEventActivity : AppCompatActivity(),
@@ -47,38 +48,33 @@ class CreatedNewEventActivity : AppCompatActivity(),
         DatePicker.onDateFragmentListener,
         TimePicker.onTimeFragmentListener,
         IPickResult {
-    override fun onPickResult(result: PickResult?) {
 
-        if (result!!.error == null) {
-            eventImageUri = result.uri
-            displayImage(eventImageUri)
-        } else {
-            pushLog("onPickResult", result.error)
-        }
-
-    }
-
-    private fun displayImage(eventImageUri: Uri?) {
-        Picasso.with(this).load(eventImageUri)
-                .config(Bitmap.Config.RGB_565)
-                .fit()
-                .centerCrop()
-                .into(image_new_event)
-    }
 
     private lateinit var myRef: DatabaseReference
-    private lateinit var eventImageUri: Uri
-    private val SELECT_PHOTO: Int = 5
+    private var eventImageUri: Uri
     private val LOCATION_PERMISSION_REQUEST_ID: Int = 3
     private val LOG_TAG: String = "GOT"
     private val LOG_HEAD: String = CreatedNewEventActivity::class.java.simpleName
     private var mMap: GoogleMap? = null
-init {
-    this.eventImageUri = Uri.EMPTY
 
-}
+    private var dateStartMap: MutableMap<String, String>
+    private var dateExpirationMap: MutableMap<String, String>
+    private var timeStartMap: MutableMap<String, String>
+    private var timeExpirationMap: MutableMap<String, String>
+    private var locationPoint: LatLng
+
+
+    init {
+        this.eventImageUri = Uri.EMPTY
+        this.dateStartMap = mutableMapOf()
+        this.dateExpirationMap = mutableMapOf()
+        this.timeStartMap = mutableMapOf()
+        this.timeExpirationMap = mutableMapOf()
+        this.locationPoint = LatLng(0.0, 0.0)
+    }
+
     override fun onMyLocationClick(p0: Location) {
-
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun chooseTime(mission: String) {
@@ -89,8 +85,33 @@ init {
         timeDialog.show(supportFragmentManager, getString(R.string.tag_time_picker))
     }
 
-    override fun getTime(mission: String, time: String) {
-        setTimeDisplay(mission, time)
+    override fun getTime(mission: String, time: MutableMap<String, String>) {
+        val timeDisplay = buildTimeFromDisplay(time)
+        when (mission) {
+            getString(R.string.key_mission_choose_time_start) -> {
+                this.timeStartMap.clear()
+                this.timeStartMap = time
+            }
+            getString(R.string.key_mission_choose_time_expiration) -> {
+                this.timeExpirationMap.clear()
+                this.timeExpirationMap = time
+            }
+        }
+        setTimeDisplay(mission, timeDisplay)
+    }
+
+    private fun buildTimeFromDisplay(time: MutableMap<String, String>): String {
+        val minuteString: String = if (time[getString(R.string.key_minute_map_date)]!!.toInt() >= 10) {
+            time[getString(R.string.key_minute_map_date)].toString()
+        } else {
+            "0" + time[getString(R.string.key_minute_map_date)]
+        }
+        val hoursString: String = if (time[getString(R.string.key_hours_map_date)]!!.toInt() >= 10) {
+            time[getString(R.string.key_hours_map_date)].toString()
+        } else {
+            "0" + time[getString(R.string.key_hours_map_date)]
+        }
+        return hoursString + getString(R.string.tag_separate_date) + minuteString
     }
 
     private fun setTimeDisplay(mission: String, time: String) {
@@ -100,20 +121,41 @@ init {
         }
     }
 
-    override fun getDate(mission: String, date: String) {
-        setDateDisplay(mission, date)
+    override fun getDate(mission: String, date: MutableMap<String, String>) {
+        val dateString = buildDateFromDisplay(date)
+
+        when (mission) {
+            getString(R.string.key_mission_choose_date_start) -> {
+                this.dateStartMap.clear()
+                this.dateStartMap = date
+            }
+            getString(R.string.key_mission_choose_date_expiration) -> {
+                this.dateExpirationMap.clear()
+                this.dateExpirationMap = date
+            }
+        }
+        setDateDisplay(mission, dateString)
+    }
+
+    private fun buildDateFromDisplay(date: MutableMap<String, String>): String {
+        val monthArrays = resources.getStringArray(R.array.month)
+        return "${date[getString(R.string.key_year_map_date)]}" +
+                ":${monthArrays[date[getString(R.string.key_month_map_date)]!!.toInt()]}" +
+                ":${date[getString(R.string.key_day_map_date)]}"
     }
 
     private fun setDateDisplay(mission: String, date: String) {
         when (mission) {
-            getString(R.string.key_mission_choose_date_start) -> tv_new_event_date_start.text = date
-            getString(R.string.key_mission_choose_date_expiration) -> tv_new_event_date_expiration.text = date
+            getString(R.string.key_mission_choose_date_start) -> {
+                tv_new_event_date_start.text = date
+            }
+            getString(R.string.key_mission_choose_date_expiration) -> {
+                tv_new_event_date_expiration.text = date
+            }
         }
-
     }
 
     private fun chooseDate(mission: String) {
-
         val bundle = Bundle()
         bundle.putString(getString(R.string.key_bundle_missions_pickers), mission)
         val dateDialog = DatePicker()
@@ -145,9 +187,11 @@ init {
 
 
         mMap!!.setOnMapClickListener({ point ->
-            mMap!!.clear()
 
+            mMap!!.clear()
             mMap!!.addMarker(MarkerOptions().position(point))
+
+            locationPoint = point
 
             setLocationDisplay(point)
             closeFragment(getString(R.string.tag_maps_fragment))
@@ -187,12 +231,6 @@ init {
     private fun closeFragment(nameFragment: String) {
         val manager = supportFragmentManager
         manager.popBackStack(nameFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        tv_new_event_date_expiration.visibility = View.VISIBLE
-        tv_new_event_date_start.visibility = View.VISIBLE
-        tv_new_event_time_expiration.visibility = View.VISIBLE
-        tv_new_event_time_start.visibility = View.VISIBLE
-        tv_new_event_location.visibility = View.VISIBLE
-        btn_created_new_event.visibility = View.VISIBLE
 
     }
 
@@ -210,7 +248,21 @@ init {
             chooseImageManager()
         })
 
-
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.action_add_event -> false
+                R.id.action_all_event -> {
+                    startActivity(Intent(applicationContext, EventListActivity::class.java))
+                }
+                R.id.action_open_favorites -> {
+                    startActivity(Intent(applicationContext
+                            , EventListActivity::class.java)
+                            .putExtra(getString(R.string.key_mission_open_fragment)
+                                    , getString(R.string.key_signed_event_fragment)))
+                }
+            }
+            false
+        }
         btn_created_new_event.setOnClickListener({
             if (!checkDataDisplay()) {
                 Toast.makeText(applicationContext, "Not all fields are filled", Toast.LENGTH_SHORT).show()
@@ -221,7 +273,7 @@ init {
                     Toast.makeText(applicationContext, "Start date can't be a late end date", Toast.LENGTH_SHORT).show()
                 } else {
                     this.myRef = FirebaseDatabase.getInstance().reference.child(getString(R.string.name_table_event_db))
-                    if (eventImageUri.toString() !=""  ){
+                    if (eventImageUri.toString() != "") {
                         val idCreatedEvent = this.myRef.push().key
 
                         val photoRef: StorageReference = FirebaseStorage.getInstance().getReference("event_photos").child(idCreatedEvent)
@@ -229,7 +281,7 @@ init {
                         photoRef.putFile(eventImageUri)
                                 .addOnSuccessListener { taskSnapshot ->
                                     taskSnapshot.downloadUrl.toString()
-                                    newEvent.uriImage=taskSnapshot.downloadUrl.toString()
+                                    newEvent.uriImage = taskSnapshot.downloadUrl.toString()
                                     myRef.child(idCreatedEvent).setValue(newEvent)
                                     pushLog("addOnSuccessListener", taskSnapshot.toString())
                                 }
@@ -238,23 +290,44 @@ init {
                                     Toast.makeText(applicationContext, "Event can not be created", Toast.LENGTH_SHORT).show()
                                 }
 
-                    }else{
+                    } else {
                         myRef.push().setValue(newEvent)
                     }
 
-                     finish()
+                    finish()
                 }
             }
 
         })
     }
 
-
-
     private fun chooseImageManager() {
+        PickImageDialog.build(PickSetup(), this).setOnPickCancel(object : IPickCancel {
+            override fun onCancelClick() {
+                pushLog("onPickResult", "click button Cancel")
+                //
+            }
+        }).show(this)
+    }
 
-        PickImageDialog.build(PickSetup(), this).show(this)
+    override fun onPickResult(result: PickResult) {
+        pushLog("onPickResult", result)
+        if (result.error == null) {
+            eventImageUri = result.uri
+            displayImage(eventImageUri)
+        } else {
+            pushLog("onPickResult", result.error)
+        }
 
+    }
+
+    private fun displayImage(eventImageUri: Uri?) {
+        Picasso.with(this).load(eventImageUri)
+                .placeholder(android.R.drawable.ic_menu_report_image)
+                .config(Bitmap.Config.RGB_565)
+                .fit()
+                .centerCrop()
+                .into(image_new_event)
     }
 
     private fun checkDataDisplay(): Boolean = !((edit_text_new_event_title.text.toString().replace(" ", "") == "")
@@ -270,7 +343,7 @@ init {
         val descriptionNewEvent = edit_text_new_event_description.text.toString()
         val fullDateStartNewEvent: Calendar = buildDateStart()
         val fullDateExpirationNewEvent: Calendar = buildDateExpiration()
-        val locationNewEvent: LatLng = buildLocation()
+        val locationNewEvent: LatLng = this.locationPoint
 
         return Event(FirebaseAuth.getInstance().currentUser!!.uid,
                 titleNewEvent,
@@ -282,48 +355,27 @@ init {
                 Calendar.getInstance().timeInMillis)
     }
 
-    private fun buildLocation(): LatLng {
-        val locationString: String = tv_new_event_location.text.toString()
-
-        val separateLocationList = locationString.split(getString(R.string.tag_separate_location).toRegex())
-
-        return LatLng(separateLocationList[0].toDoubleOrNull()!!, separateLocationList[1].toDoubleOrNull()!!)
-    }
-
     private fun buildDateExpiration(): Calendar {
-        val fullDateExpirationString: String = tv_new_event_date_expiration.text.toString() + getString(R.string.tag_separate_date) + tv_new_event_time_expiration.text.toString()
-
-        val separateFullDateExpirationList = fullDateExpirationString.split(getString(R.string.tag_separate_date).toRegex())
-
-        val fullDateExpirationCalendar = getCalendar(separateFullDateExpirationList)
+        val fullDateMap: Map<String, String> = this.dateExpirationMap + this.timeExpirationMap
+        val fullDateExpirationCalendar = getCalendar(fullDateMap as MutableMap<String, String>)
         return fullDateExpirationCalendar!!
     }
 
-    override fun onBackPressed() {
-        if(tv_new_event_date_expiration.visibility==View.VISIBLE)
-            super.onBackPressed()
-
-    }
-
     private fun buildDateStart(): Calendar {
-        val fullDateStartString: String = tv_new_event_date_start.text.toString() + getString(R.string.tag_separate_date) + tv_new_event_time_start.text.toString()
-
-        val separateFullDateStartList = fullDateStartString.split(getString(R.string.tag_separate_date).toRegex())
-
-        val fullDateStartCalendar = getCalendar(separateFullDateStartList)
+        val fullDateMap: Map<String, String> = this.dateStartMap + this.timeStartMap
+        val fullDateStartCalendar = getCalendar(fullDateMap as MutableMap<String, String>)
         return fullDateStartCalendar!!
     }
 
-    private fun getCalendar(separateDateList: List<String>): Calendar? {
-        val fullDateStartCalendar = Calendar.getInstance()
-        fullDateStartCalendar.set(Calendar.YEAR, separateDateList[0].toInt())
-        fullDateStartCalendar.set(Calendar.MONTH, separateDateList[1].toInt())
-        fullDateStartCalendar.set(Calendar.DAY_OF_MONTH, separateDateList[2].toInt())
-        fullDateStartCalendar.set(Calendar.HOUR_OF_DAY, separateDateList[3].toInt())
-        fullDateStartCalendar.set(Calendar.MINUTE, separateDateList[4].toInt())
-        fullDateStartCalendar.set(Calendar.SECOND, 0)
-        return fullDateStartCalendar
-    }
+    private fun getCalendar(dateMap: Map<String, String>): Calendar? =
+            Calendar.getInstance().apply {
+                set(Calendar.YEAR, dateMap.get(getString(R.string.key_year_map_date))!!.toInt())
+                set(Calendar.MONTH, dateMap.get(getString(R.string.key_month_map_date))!!.toInt())
+                set(Calendar.DAY_OF_MONTH, dateMap.get(getString(R.string.key_day_map_date))!!.toInt())
+                set(Calendar.HOUR_OF_DAY, dateMap.get(getString(R.string.key_hours_map_date))!!.toInt())
+                set(Calendar.MINUTE, dateMap.get(getString(R.string.key_minute_map_date))!!.toInt())
+                set(Calendar.SECOND, 0)
+            }
 
 
     private fun displayMap() {
@@ -336,13 +388,62 @@ init {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.addToBackStack(getString(R.string.tag_maps_fragment))
         fragmentTransaction.replace(R.id.my_container, mMapFragment, getString(R.string.tag_maps_fragment))
-        tv_new_event_date_expiration.visibility = View.GONE
-        tv_new_event_date_start.visibility = View.GONE
-        tv_new_event_time_expiration.visibility = View.GONE
-        tv_new_event_time_start.visibility = View.GONE
-        tv_new_event_location.visibility = View.GONE
-        btn_created_new_event.visibility = View.GONE
         fragmentTransaction.commit()
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putSerializable("dateStartBundle", this.dateStartMap.toProperties())
+        outState.putSerializable("dateExpirationMap", this.dateExpirationMap.toProperties())
+        outState.putSerializable("timeStartMap", this.timeStartMap.toProperties())
+        outState.putSerializable("timeExpirationMap", this.timeExpirationMap.toProperties())
+        outState.putDouble("latitude", this.locationPoint.latitude)
+        outState.putDouble("longitude", this.locationPoint.longitude)
+        outState.putString("urlImage", this.eventImageUri.toString())
+
+
+        Log.d(LOG_TAG, "onSaveInstanceState")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        this.dateStartMap = savedInstanceState.getSerializable("dateStartBundle") as MutableMap<String, String>
+        this.dateExpirationMap = savedInstanceState.getSerializable("dateExpirationMap") as MutableMap<String, String>
+        this.timeStartMap = savedInstanceState.getSerializable("timeStartMap") as MutableMap<String, String>
+        this.timeExpirationMap = savedInstanceState.getSerializable("timeExpirationMap") as MutableMap<String, String>
+        this.locationPoint = LatLng(savedInstanceState.getDouble("latitude"), savedInstanceState.getDouble("longitude"))
+        this.eventImageUri = Uri.parse(savedInstanceState.getString("urlImage"))
+
+        when {
+            this.dateStartMap.isNotEmpty() -> {
+                setDateDisplay(getString(R.string.key_mission_choose_date_start), buildDateFromDisplay(this.dateStartMap))
+            }
+
+        }
+        when {
+            this.dateExpirationMap.isNotEmpty() -> {
+                setDateDisplay(getString(R.string.key_mission_choose_date_expiration), buildDateFromDisplay(this.dateExpirationMap))
+            }
+
+        }
+        when {
+            this.timeStartMap.isNotEmpty() -> {
+                setTimeDisplay(getString(R.string.key_mission_choose_time_start), buildTimeFromDisplay(this.timeStartMap))
+            }
+        }
+        when {
+
+            this.timeExpirationMap.isNotEmpty() -> {
+                setTimeDisplay(getString(R.string.key_mission_choose_time_expiration), buildTimeFromDisplay(this.timeExpirationMap))
+            }
+        }
+
+        if (this.locationPoint.latitude != 0.0 && this.locationPoint.longitude != 0.0) {
+            setLocationDisplay(this.locationPoint)
+        }
+        displayImage(this.eventImageUri)
     }
 
     private fun pushLog(topic: String, message: Any) {

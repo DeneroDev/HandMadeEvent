@@ -142,6 +142,7 @@
         app:layout_constraintTop_toTopOf="parent"
          />
 
-
+<include
+    layout="@layout/bottom_navigation_view"/>
 
 </android.support.constraint.ConstraintLayout>

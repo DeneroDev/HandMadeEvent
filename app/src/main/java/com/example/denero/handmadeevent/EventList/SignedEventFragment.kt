@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
@@ -23,7 +22,7 @@ import java.io.Serializable
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [SignedEventFragment.OnFragmentInteractionListener] interface
+ * [SignedEventFragment.OnSignedEventFragmentListener] interface
  * to handle interaction events.
  */
 class SignedEventFragment : Fragment()
@@ -31,7 +30,7 @@ class SignedEventFragment : Fragment()
 
     override fun getIdSelectedEvent(selectEventId: String) {
 
-        mListener!!.getEventSelectedId(selectEventId)
+        mListenerSignedEvent!!.getEventSelectedId(selectEventId)
     }
 
     override fun getIdSelectedEventForUnsubscribe(selectEventId: String) {
@@ -43,7 +42,7 @@ class SignedEventFragment : Fragment()
                         + selectEventId).removeValue()
     }
 
-    private var mListener: OnFragmentInteractionListener? = null
+    private var mListenerSignedEvent: OnSignedEventFragmentListener? = null
 
     private var NUMBER_EVENT_RECORDS_FOR_SAMLE: Int = -1
     private lateinit var NAME_TABLE_ATTENDEES_EVENT_DB: String
@@ -55,17 +54,17 @@ class SignedEventFragment : Fragment()
     private var attendeesEventList: MutableList<String>? = null
     private var adapter: SignedEventAdapter? = null
 
-    interface OnFragmentInteractionListener {
+    interface OnSignedEventFragmentListener {
         fun closeMe(keyFragment: String)
         fun getEventSelectedId(idEventSelected: String)
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            mListener = context
+        if (context is OnSignedEventFragmentListener) {
+            mListenerSignedEvent = context
         } else {
-            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException(context!!.toString() + " must implement OnSignedEventFragmentListener")
         }
     }
 
@@ -80,14 +79,14 @@ class SignedEventFragment : Fragment()
         this.NAME_TABLE_EVENT_DB = activity!!.getString(R.string.name_table_event_db)
 
         recycler_list.layoutManager = LinearLayoutManager(activity!!.applicationContext)
-        adapter = SignedEventAdapter(this, mutableListOf<HashMap<String, Event>>(),activity!!.applicationContext)
+        adapter = SignedEventAdapter(this, mutableListOf<HashMap<String, Event>>(),activity!!.applicationContext,  activity!!.applicationContext.resources.getStringArray(R.array.month))
         recycler_list.adapter = adapter
 
         val myRef = FirebaseDatabase.getInstance().getReference(NAME_TABLE_ATTENDEES_EVENT_DB)
 
         myRef.child(FirebaseAuth.getInstance().currentUser!!.uid).limitToFirst(NUMBER_EVENT_RECORDS_FOR_SAMLE).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onCancelled(snapshot: DatabaseError?) {
+              pushLog("onCancelled",snapshot.toString())
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -95,7 +94,7 @@ class SignedEventFragment : Fragment()
                 pushLog("dataSnapshot.value 1", dataSnapshot.value.toString())
                 if (dataSnapshot.value == null) {
                     adapter!!.updateDate(mutableListOf<HashMap<String, Event>>())
-//                    Toast.makeText(activity!!.applicationContext,"You do not have signed events",Toast.LENGTH_SHORT).show() //падает хз
+
                 } else {
 
                     for (idEvent in dataSnapshot.children) {
@@ -117,8 +116,8 @@ class SignedEventFragment : Fragment()
         //TODO: ИДИОТИЗМ
         val myRef = FirebaseDatabase.getInstance().reference
         myRef.child(NAME_TABLE_EVENT_DB).limitToFirst(NUMBER_EVENT_RECORDS_FOR_SAMLE).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onCancelled(snapshot: DatabaseError?) {
+                pushLog("onCancelled",snapshot.toString())
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -151,7 +150,7 @@ class SignedEventFragment : Fragment()
 
     override fun onDetach() {
         super.onDetach()
-        mListener = null
+        mListenerSignedEvent = null
     }
 
     private fun pushLog(topic: String, message: Serializable) {

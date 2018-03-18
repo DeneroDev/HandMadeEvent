@@ -23,7 +23,7 @@ class DatePicker : DialogFragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var mission: String
 
     interface onDateFragmentListener {
-        fun getDate(mission: String, date: String)
+        fun getDate(mission: String, date: MutableMap<String, String>)
     }
 
 
@@ -69,7 +69,11 @@ class DatePicker : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(datePicker: android.widget.DatePicker, year: Int,
                            month: Int, day: Int) {
-        mListener!!.getDate(mission,"$year:$month:$day")
+        var dateMap = mutableMapOf<String,String>()
+        dateMap.put(getString(R.string.key_year_map_date),year.toString())
+        dateMap.put(getString(R.string.key_month_map_date),month.toString())
+        dateMap.put(getString(R.string.key_day_map_date),day.toString())
+        mListener!!.getDate(mission,dateMap)
 
     }
 }

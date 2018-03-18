@@ -27,7 +27,8 @@ import java.util.*
 
 class AllEventAdapter(var mLister: onAllEventAdapterListener,
                       var data: MutableList<HashMap<String, Event>>?,
-                      var context: Context)
+                      var context: Context,
+                      var month:Array<String>)
     : RecyclerView.Adapter<AllEventAdapter.MyViewHolder>() {
 
     private val LOG_TAG = "GOT"
@@ -51,25 +52,24 @@ class AllEventAdapter(var mLister: onAllEventAdapterListener,
         }
         if (key != "") {
             holder!!.id = key
-//            pushLog("event ", data?.get(position)!![holder.id]?.toString()!!)
-            //TODO: как то обозначить пописанные евенты
+            pushLog("event ", data?.get(position)!![holder.id]?.toString()!!)
+
 
             holder.title.text = data?.get(position)!![holder.id]?.titleEvent
-            holder.timeStart.text = getTimeString(data?.get(position)!![holder.id]!!.dateStart)
+            holder.timeStart.text = buildDisplayTime(getTimeString(data?.get(position)!![holder.id]!!.dateStart))
 
             holder.mainLayout.setOnClickListener(View.OnClickListener {
                 mLister.getIdSelectedEvent(holder.id)
             })
 
-            //TODO: скрывать кнопку если была подпись???
-            //TODO: колхоз
+
             holder.btnSubscribe.setOnClickListener(View.OnClickListener {
                 mLister.getIdSelectedEventForSubscribe(holder.id)
             })
 
-            if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()){
+            if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()) {
                 Picasso.with(context).load(data?.get(position)!![holder.id]?.uriImage)
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(android.R.drawable.ic_menu_report_image)
                         .error(R.mipmap.ic_launcher)
                         .config(Bitmap.Config.RGB_565)
                         .fit()
@@ -79,6 +79,22 @@ class AllEventAdapter(var mLister: onAllEventAdapterListener,
             }
 
         }
+    }
+
+    private fun buildDisplayTime(timeString: String?): String {
+        val fullDateExpirationString: String = timeString!!
+        val tagSeparate=context.getString(R.string.tag_separate_date)
+        val separateFullDateExpirationList = fullDateExpirationString.split((tagSeparate).toRegex())
+
+
+        return month[separateFullDateExpirationList[0].toInt()] +
+                tagSeparate +
+                separateFullDateExpirationList[1] +
+                tagSeparate +
+                separateFullDateExpirationList[2] +
+                tagSeparate +
+                separateFullDateExpirationList[3]
+
     }
 
     private fun getTimeString(timeMillionsSecond: Long): String? {
