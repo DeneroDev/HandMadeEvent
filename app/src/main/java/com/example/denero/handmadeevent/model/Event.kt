@@ -44,12 +44,6 @@ open class Event():ClusterItem{
         this.createdTimeInMillis=createdTimeInMillis
     }
 
-
-    fun createTopic() : String{
-        var prepareTitle = titleEvent.replace(" ", "")
-        return prepareTitle + createdTimeInMillis.toString()
-    }
-
     override fun toString(): String = "\n"+
             this.userCreated + "\n" +
             this.titleEvent + "\n" +

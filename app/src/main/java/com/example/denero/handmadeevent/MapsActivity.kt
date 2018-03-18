@@ -173,8 +173,9 @@ class MapsActivity() : AppCompatActivity(),
 
                                     override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                                         Log.d("PROGRESS","COMPLETE")
+                                        // падает
                                         var file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), event.titleEvent+".png")
-                                        var fos = FileOutputStream(file)
+                                            var fos = FileOutputStream(file)
                                         bitmap!!.compress(Bitmap.CompressFormat.JPEG,50,fos)
                                         event.pathDisk = file.absolutePath
                                         fos.close()

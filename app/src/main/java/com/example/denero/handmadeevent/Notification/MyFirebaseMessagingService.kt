@@ -55,7 +55,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         var notification_id = (event.createdTimeInMillis % 10000000).toInt()
 
-        var intent = createIntentToFullInfoEvent(event_key)
+        //var intent = createIntentToFullInfoEvent(event_key)
+        var intent = Intent(this, EventListActivity::class.java)
+        intent.putExtra(getString(R.string.key_id_event_selected), event_key)
+        intent.putExtra(getString(R.string.key_mission_open_fragment), getString(R.string.key_id_event_selected ))
+
         var contentIntent = PendingIntent.getActivity(this, notification_id, intent, PendingIntent.FLAG_ONE_SHOT)
 
         var intentDone = Intent(this, ActionNotificationBtnReceiver::class.java)
@@ -105,6 +109,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun createIntentToFullInfoEvent(event_key: String): Intent {
         var intent = Intent(this, EventListActivity::class.java)
         intent.putExtra(getString(R.string.key_id_event_selected), event_key)
+        intent.putExtra(getString(R.string.key_mission_open_fragment), getString(R.string.key_id_event_selected ))
+
         return intent
     }
 }

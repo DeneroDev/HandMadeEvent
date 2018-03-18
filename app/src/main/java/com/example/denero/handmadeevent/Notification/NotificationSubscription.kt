@@ -10,11 +10,15 @@ import com.google.firebase.messaging.FirebaseMessaging
 class NotificationSubscription() {
 
     fun subscribeOn(event : Event) {
-        FirebaseMessaging.getInstance().subscribeToTopic(event.createTopic())
+        FirebaseMessaging.getInstance().subscribeToTopic(createTopic(event))
     }
 
     fun unsubscribeOn(event : Event) {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(event.createTopic())
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(createTopic(event))
+    }
+
+    fun createTopic(event: Event) : String{
+        return (event.dateStart + event.createdTimeInMillis).toString()
     }
 
 }

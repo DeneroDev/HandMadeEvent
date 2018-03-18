@@ -18,12 +18,14 @@ class RetrofitApiHelper() {
 
     fun sendStartNotification(event: Event, event_id : String, calendar: Calendar){
         var client = RetrofitApiService.create()
+        var topic = NotificationSubscription().createTopic(event)
 
         var result = client.startNotificationPostRequest(
                 event_id,
                 event.dateStart.toString(),
                 calendar.timeZone.id,
-                event.createTopic())
+                topic
+                )
 
         result.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>?, response: Response<String>) {
