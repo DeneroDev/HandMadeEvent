@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.denero.handmadeevent.Notification.NotificationSubscription
 import com.example.denero.handmadeevent.R
 
 import com.example.denero.handmadeevent.model.Event
@@ -65,6 +66,9 @@ class AllEventAdapter(var mLister: onAllEventAdapterListener,
 
             holder.btnSubscribe.setOnClickListener(View.OnClickListener {
                 mLister.getIdSelectedEventForSubscribe(holder.id)
+
+                var event = data?.get(position)!![holder.id] as Event
+                NotificationSubscription().subscribeOn(event)
             })
 
             if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()) {

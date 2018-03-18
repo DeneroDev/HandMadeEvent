@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.denero.handmadeevent.MainWindowActivity">
+
+    <Button
+        android:id="@+id/to_my_created_event_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Created events"/>
+
+    <Button
+        android:id="@+id/to_event_list_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="event list"/>
+
+    <Button
+        android:id="@+id/to_create_event_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Event"/>
+
+
+</LinearLayout>
