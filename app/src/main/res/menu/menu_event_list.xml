@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.denero.handmadeevent.EventList.EventListActivity">
+    <item
+        android:id="@+id/show_all_event"
+        android:orderInCategory="100"
+        android:title="All events"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/show_signed_event"
+        android:orderInCategory="100"
+        android:title="Signed events"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/show_my_event"
+        android:orderInCategory="100"
+        android:title="My events"
+        app:showAsAction="never" />
+</menu>

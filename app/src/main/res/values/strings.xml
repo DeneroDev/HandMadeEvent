@@ -29,4 +29,27 @@
     <string name="hint_tv_start_time">Start time</string>
     <string name="hint_tv_expiration_time">Expiration time</string>
     <string name="hint_tv_description">Description</string>
+    <string name="key_all_event_fragment">AllEvent</string>
+    <string name="text_btn_subscribe_item">Subscribe</string>
+    <string name="name_table_event_db">Events</string>
+    <string name="key_id_event_selected">id_event_selected</string>
+    <string name="key_full_event_fragment">FullEvent</string>
+    <string name="name_table_attendees_event_db">AttendeesEvent</string>
+
+
+    <integer name="number_event_records_for_sample">60</integer>
+    <string name="title_activity_l">lActivity</string>
+    <string name="key_signed_event_fragment">SignedEvents</string>
+    <string name="text_btn_unsubscribe_item_signed_event">Unsubscribe</string>
+    <string name="tag_separate_query_db">/</string>
+    <string name="key_mission_open_fragment">openFragment</string>
+    <string name="key_my_event_fragment">MyEvent</string>
+    <string name="text_btn_remove_item_my_event">Remove</string>
+    <string name="weak_day_1">Monday</string>
+    <string name="weak_day_2">Tuesday</string>
+    <string name="weak_day_3">Wednesday</string>
+    <string name="weak_day_4">Thursday</string>
+    <string name="weak_day_5">Friday</string>
+    <string name="weak_day_6">Saturday</string>
+    <string name="weak_day_7">Sunday</string>
 </resources>

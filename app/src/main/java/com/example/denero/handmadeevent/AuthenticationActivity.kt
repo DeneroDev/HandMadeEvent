@@ -5,11 +5,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.denero.handmadeevent.EventList.EventListActivity
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
-
-
 
 
 class AuthenticationActivity : AppCompatActivity() {
@@ -19,8 +18,9 @@ class AuthenticationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
+//        FirebaseAuth.getInstance().signOut()
 
-        if(FirebaseAuth.getInstance().currentUser == null) {
+        if (FirebaseAuth.getInstance().currentUser == null) {
 
             startActivityForResult(
                     AuthUI.getInstance()
@@ -36,23 +36,26 @@ class AuthenticationActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this,
                     getString(R.string.auth_text_welcome) + " " + (FirebaseAuth.getInstance()
-                            .currentUser?.displayName  ),
+                            .currentUser?.displayName),
                     Toast.LENGTH_LONG)
                     .show()
-            startActivity(Intent(applicationContext,MapsActivity::class.java))
+            // TODO: start Map
+            startActivity(Intent(applicationContext, MapsActivity::class.java))
+//            startActivity(Intent(applicationContext, CreatedNewEventActivity::class.java))
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == SIGN_IN_REQUEST_CODE) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == SIGN_IN_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 Toast.makeText(this,
                         getString(R.string.auth_text_success_authentication),
                         Toast.LENGTH_LONG)
                         .show()
-//                startActivity(...)
+                // TODO: start Map
+                startActivity(Intent(applicationContext, MapsActivity::class.java))
 
             } else {
                 Toast.makeText(this,
@@ -64,6 +67,13 @@ class AuthenticationActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    override fun onResume() {
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            finish()
+        }
+        super.onResume()
     }
 
     private fun pushLog(topic: String, message: Any) {
