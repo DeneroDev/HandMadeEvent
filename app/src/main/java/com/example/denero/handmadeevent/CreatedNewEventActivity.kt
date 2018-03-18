@@ -75,7 +75,7 @@ class CreatedNewEventActivity : AppCompatActivity(),
     }
 
     override fun onMyLocationClick(p0: Location) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     private fun chooseTime(mission: String) {
@@ -232,7 +232,7 @@ class CreatedNewEventActivity : AppCompatActivity(),
     private fun closeFragment(nameFragment: String) {
         val manager = supportFragmentManager
         manager.popBackStack(nameFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-
+        changedBtn(View.VISIBLE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -384,6 +384,8 @@ class CreatedNewEventActivity : AppCompatActivity(),
 
 
     private fun displayMap() {
+
+        changedBtn(View.GONE)
         val options = GoogleMapOptions()
         options.compassEnabled(true).zoomControlsEnabled(true)
 
@@ -394,6 +396,15 @@ class CreatedNewEventActivity : AppCompatActivity(),
         fragmentTransaction.addToBackStack(getString(R.string.tag_maps_fragment))
         fragmentTransaction.replace(R.id.my_container, mMapFragment, getString(R.string.tag_maps_fragment))
         fragmentTransaction.commit()
+    }
+
+    private fun changedBtn(int: Int){
+        tv_new_event_location.visibility = int
+        tv_new_event_date_start.visibility = int
+        tv_new_event_date_expiration.visibility =int
+        tv_new_event_time_expiration.visibility = int
+        tv_new_event_time_start.visibility = int
+        btn_created_new_event.visibility = int
     }
 
 

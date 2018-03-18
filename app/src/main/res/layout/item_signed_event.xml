@@ -38,8 +38,10 @@
             tools:text="02:04:2011" />
 
         <Button
+            android:textColor="@android:color/white"
             android:id="@+id/btn_unsubscribe_item_signed_event"
             android:layout_width="140dp"
+            android:padding="8dp"
             android:layout_height="32dp"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"

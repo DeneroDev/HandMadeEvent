@@ -24,6 +24,7 @@ open class Event():ClusterItem{
     var createdTimeInMillis : Long = 0
     var uriImage: String = ""
     var pathDisk:String =""
+    var id:String = ""
 
 
     constructor(userCreated: String,
@@ -42,12 +43,6 @@ open class Event():ClusterItem{
         this.dateStart=dateStart
         this.dateExpiration=dateExpiration
         this.createdTimeInMillis=createdTimeInMillis
-    }
-
-
-    fun createTopic() : String{
-        var prepareTitle = titleEvent.replace(" ", "")
-        return prepareTitle + createdTimeInMillis.toString()
     }
 
     override fun toString(): String = "\n"+

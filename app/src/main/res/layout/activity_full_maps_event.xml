@@ -68,20 +68,35 @@
 
             <TextView
                 android:id="@+id/title_map_event"
-                android:layout_width="match_parent"
+                android:layout_width="251dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="left"
                 android:text="TEST"
                 android:textSize="34sp"
                 app:layout_constraintBottom_toTopOf="@+id/title_map_description"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/subscr_event"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/subscr_event"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/button_common"
+                android:text="+"
+                android:textColor="@android:color/white"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toBottomOf="@+id/title_map_event"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/title_map_event"
+                app:layout_constraintTop_toTopOf="@+id/title_map_event" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -113,22 +128,23 @@
                 android:id="@+id/img_finish"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ic_finish"
-                app:layout_constraintBottom_toTopOf="@+id/google_maps_fragment"
+                app:layout_constraintBottom_toBottomOf="@+id/title_map_end"
                 app:layout_constraintEnd_toStartOf="@+id/title_map_end"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_map_start" />
+                app:layout_constraintTop_toTopOf="@+id/title_map_end" />
 
             <TextView
                 android:id="@+id/title_map_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="24dp"
                 android:text="English is a West Germanic language that was first spoken in early medieval England and is now a global lingua franca. Named after the Angles"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/title_map_creator"
@@ -179,7 +195,7 @@
                 android:id="@+id/google_maps_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

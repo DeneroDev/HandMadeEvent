@@ -23,7 +23,7 @@ class RetrofitApiHelper() {
                 event_id,
                 event.dateStart.toString(),
                 calendar.timeZone.id,
-                event.createTopic())
+                NotificationSubscription().createTopic(event))
 
         result.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>?, response: Response<String>) {

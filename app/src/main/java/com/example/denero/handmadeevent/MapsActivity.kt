@@ -88,7 +88,6 @@ class MapsActivity() : AppCompatActivity(),
             if (location != null) {
                 if(sp.getBoolean("create",true)){
                     showLocation(location)
-
                 }
 
                 currentLocation = location
@@ -120,7 +119,6 @@ class MapsActivity() : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-
         FirebaseApp.initializeApp(applicationContext)
         mAuth = FirebaseAuth.getInstance()
         var database = FirebaseDatabase.getInstance()
@@ -155,13 +153,16 @@ class MapsActivity() : AppCompatActivity(),
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
                 var event: Event = p0!!.getValue(Event::class.java)!!
+                event.id = p0.key
                 event.pathDisk = sp.getString(event.titleEvent,"")
                 Log.d("PROGRESS",sp.getString(event.titleEvent,""))
                 try {
-                    if(event.pathDisk==""){
+                   /* if(event.pathDisk==""){
                         Picasso.with(applicationContext)
                                 .load(event.uriImage)
+                                .priority(Picasso.Priority.HIGH)
                                 .resize(25,25)
+                                .config(Bitmap.Config.RGB_565)
                                 .into(object :Target{
                                     override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
                                         Log.d("PROGRESS","START")
@@ -173,6 +174,9 @@ class MapsActivity() : AppCompatActivity(),
 
                                     override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                                         Log.d("PROGRESS","COMPLETE")
+
+
+
                                         var file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), event.titleEvent+".png")
                                         var fos = FileOutputStream(file)
                                         bitmap!!.compress(Bitmap.CompressFormat.JPEG,50,fos)
@@ -187,11 +191,8 @@ class MapsActivity() : AppCompatActivity(),
                                         mClusterManager.addItem(event)
                                     }
 
-                                })
-                    }
-                    else
-                        mClusterManager.addItem(event)
-
+                                })*/
+                    mClusterManager.addItem(event)
                 }catch (e:Exception){
                     Log.d("EXCEP_1",e.toString() + "\n" + event.uriImage + " End")
                     mClusterManager.addItem(event)
@@ -234,6 +235,12 @@ class MapsActivity() : AppCompatActivity(),
         else{
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),1)
         }
+        if(ContextCompat.checkSelfPermission(applicationContext,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED){
+        }
+        else{
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),1)
+        }
 
     }
 
@@ -275,6 +282,7 @@ class MapsActivity() : AppCompatActivity(),
         intent.putExtra("eventTimeStart",p0.dateStart)
         intent.putExtra("eventTimeExpiration",p0.dateExpiration)
         intent.putExtra("eventTimeCreate", p0.createdTimeInMillis)
+        intent.putExtra("eventId", p0.id)
         Log.d("LONGI",p0.longitude.toString())
         Log.d("LATITUDE",p0.latitude.toString())
         Log.d("NAME",p0.titleEvent)
@@ -312,6 +320,8 @@ class MapsActivity() : AppCompatActivity(),
     override fun onMarkerDragEnd(p0: Marker?) {
         Toast.makeText(applicationContext,p0!!.position.toString(),Toast.LENGTH_LONG).show()
     }
+
+
 
     override fun onMarkerDragStart(p0: Marker?) {
         var cameraPosition = CameraPosition.Builder()
@@ -398,8 +408,13 @@ class MapsActivity() : AppCompatActivity(),
         override fun onBeforeClusterItemRendered(item: Event, markerOptions: MarkerOptions?) {
         try{
             Log.d("BEFORE:",item.pathDisk)
-            var bitmap = BitmapFactory.decodeFile(item.pathDisk)
-            mImageView.setImageBitmap(bitmap)
+            /*var bitmap = BitmapFactory.decodeFile(item.pathDisk)
+            mImageView.setImageBitmap(bitmap)*/
+            Picasso.with(applicationContext)
+                    .load(item.uriImage)
+                    .config(Bitmap.Config.RGB_565)
+                    .fit()
+                    .into(mImageView)
             val icon = mIconGenerator.makeIcon()
             markerOptions!!.icon(BitmapDescriptorFactory.fromBitmap(icon))
                     .title(item.titleEvent)

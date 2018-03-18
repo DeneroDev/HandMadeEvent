@@ -11,6 +11,7 @@
         android:id="@+id/edit_text_new_event_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
@@ -28,6 +29,7 @@
         android:layout_height="32dp"
         android:background="@drawable/button_common"
         android:clickable="true"
+        android:textColor="@android:color/white"
         android:gravity="center"
         android:inputType="none"
         android:text="Set Locale"
@@ -46,6 +48,8 @@
         android:layout_marginBottom="48dp"
         android:background="@drawable/button_common"
         android:text="@string/text_btn_created_new_event"
+
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +58,8 @@
 
     <Button
         android:id="@+id/tv_new_event_date_start"
-        android:layout_width="128dp"
+        android:layout_width="160dp"
+        android:padding="8dp"
         android:layout_height="32dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/button_common"
@@ -62,17 +67,20 @@
         android:drawableLeft="@drawable/ic_calendar"
         android:gravity="center"
         android:text="@string/hint_tv_start_date"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toStartOf="@id/tv_new_event_date_expiration"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_text_new_event_description" />
 
     <Button
         android:id="@+id/tv_new_event_date_expiration"
-        android:layout_width="128dp"
+        android:layout_width="160dp"
         android:layout_height="32dp"
         android:layout_marginTop="16dp"
+        android:padding="8dp"
         android:background="@drawable/button_common"
         android:clickable="true"
+        android:textColor="@android:color/white"
         android:drawableLeft="@drawable/ic_calendar"
         android:text="@string/hint_tv_expiration_date"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,11 +90,13 @@
 
     <Button
         android:id="@+id/tv_new_event_time_start"
-        android:layout_width="128dp"
+        android:layout_width="160dp"
         android:layout_height="32dp"
+        android:padding="8dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/button_common"
         android:clickable="true"
+        android:textColor="@android:color/white"
         android:drawableLeft="@drawable/ic_clock"
         android:text="@string/hint_tv_start_time"
         app:layout_constraintEnd_toStartOf="@id/tv_new_event_time_expiration"
@@ -95,9 +105,11 @@
 
     <Button
         android:id="@+id/tv_new_event_time_expiration"
-        android:layout_width="128dp"
+        android:layout_width="160dp"
         android:layout_height="32dp"
         android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
         android:background="@drawable/button_common"
         android:clickable="true"
         android:drawableLeft="@drawable/ic_clock"
@@ -142,7 +154,10 @@
         app:layout_constraintTop_toTopOf="parent"
          />
 
-<include
-    layout="@layout/bottom_navigation_view"/>
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        layout="@layout/bottom_navigation_view"/>
 
 </android.support.constraint.ConstraintLayout>

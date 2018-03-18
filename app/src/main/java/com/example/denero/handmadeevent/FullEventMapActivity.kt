@@ -1,15 +1,21 @@
 package com.example.denero.handmadeevent
 
 import android.graphics.BitmapFactory
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
+import com.example.denero.handmadeevent.Notification.NotificationSubscription
+import com.example.denero.handmadeevent.model.Event
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_full_maps_event.*
 import java.text.SimpleDateFormat
@@ -36,6 +42,13 @@ class FullEventMapActivity: AppCompatActivity()
         title_map_description.setText(intent.getStringExtra("eventDesctiption"))
         title_map_start.setText("Event started:"+parseDatatoString(intent.getLongExtra("eventTimeStart",0)))
         title_map_end.setText("Event ended:"+parseDatatoString(intent.getLongExtra("eventTimeExpiration",0)))
+
+        subscr_event.setOnClickListener {
+            val myRef = FirebaseDatabase.getInstance().reference.child(getString(R.string.name_table_attendees_event_db) + getString(R.string.tag_separate_query_db) + FirebaseAuth.getInstance().currentUser!!.uid)
+            myRef.child(intent.getStringExtra("eventId")).setValue(intent.getStringExtra("eventId"))
+            NotificationSubscription().subscribeOn(Event(intent.getStringExtra("eventCreator"),"","",0.0,0.0,intent.getLongExtra("eventTimeStart",0),0,intent.getLongExtra("eventTimeCreate",0)))
+            subscr_event.visibility  = View.GONE
+        }
 
 
 
@@ -93,8 +106,7 @@ class FullEventMapActivity: AppCompatActivity()
         Log.d("LATITUDE",latitude.toString())
         p0!!.addMarker(MarkerOptions().position(LatLng(longitude,latitude)))
         var cameraPosition = CameraPosition.Builder()
-                .target(LatLng(longitude,latitude))
-                .zoom(18f)
+                .target(LatLng(latitude,longitude))
                 .build()
         var cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)
         p0.animateCamera(cameraUpdate)
