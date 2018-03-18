@@ -20,6 +20,7 @@ interface RetrofitApiService {
     @Headers("content-type: application/x-www-form-urlencoded")
     @POST("handMadeEvent/index.php")
     fun startNotificationPostRequest(
+            @Field("action") action : String,
             @Field("event_key") key : String,
             @Field("event_time") time : String,
             @Field("timeZoneId") timeZone : String,
