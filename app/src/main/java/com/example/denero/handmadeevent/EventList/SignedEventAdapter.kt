@@ -15,9 +15,9 @@ import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_signed_event.view.*
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
-import java.io.Serializable
 
 /**
  * Created by goga747 on 11.03.2018.
@@ -26,7 +26,8 @@ import java.io.Serializable
 
 class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
                          var data: MutableList<HashMap<String, Event>>?,
-                         var context: Context)
+                         var context: Context
+                         ,var month: Array<String>)
     : RecyclerView.Adapter<SignedEventAdapter.MyViewHolder>() {
     private val LOG_TAG = "GOT"
     private val LOG_HEAD = SignedEventAdapter::class.java.simpleName
@@ -53,10 +54,9 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
         if (key != "") {
             holder!!.id = key
 
-            //TODO: помечать подписанные event????
 
             holder.title.text = data?.get(position)!![holder.id]?.titleEvent
-            holder.timeStart.text = getTimeString(data?.get(position)!![holder.id]!!.dateStart)
+            holder.timeStart.text = buildDisplayTime(getTimeString(data?.get(position)!![holder.id]!!.dateStart))
 
             holder.mainLayout.setOnClickListener(View.OnClickListener {
 
@@ -67,7 +67,7 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
                 pushLog("Click ${holder.id}", "unSubscribe")
                 mLister.getIdSelectedEventForUnsubscribe(holder.id)
             })
-            if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()){
+            if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()) {
                 Picasso.with(context).load(data?.get(position)!![holder.id]?.uriImage)
                         .placeholder(android.R.drawable.ic_menu_report_image)
                         .error(R.mipmap.ic_launcher)
@@ -79,12 +79,27 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
             }
 
 
-
         }
     }
 
+    private fun buildDisplayTime(timeString: String?): String {
+        val fullDateExpirationString: String = timeString!!
+        val tagSeparate = context.getString(R.string.tag_separate_date)
+        val separateFullDateExpirationList = fullDateExpirationString.split((tagSeparate).toRegex())
+
+
+        return month[separateFullDateExpirationList[0].toInt()] +
+                tagSeparate +
+                separateFullDateExpirationList[1] +
+                tagSeparate +
+                separateFullDateExpirationList[2] +
+                tagSeparate +
+                separateFullDateExpirationList[3]
+
+    }
+
     private fun getTimeString(timeMillionsSecond: Long): String? {
-        //TODO: добавить удобно варимую дату
+
         val date = Date(timeMillionsSecond)
         val formatter = SimpleDateFormat("M:d:HH:mm")
         return formatter.format(date)

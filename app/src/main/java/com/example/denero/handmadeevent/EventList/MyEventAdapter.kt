@@ -15,17 +15,17 @@ import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_my_event.view.*
-import java.text.SimpleDateFormat
-
 import java.io.Serializable
-import java.util.Date
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by goga747 on 16.03.2018.
  */
 class MyEventAdapter(var mLister: onMyEventAdapterListener,
                      var data: MutableList<HashMap<String, Event>>?,
-                     var context: Context)
+                     var context: Context,
+                     var month: Array<String>)
 
     : RecyclerView.Adapter<MyEventAdapter.MyViewHolder>() {
     private val LOG_TAG = "GOT"
@@ -53,10 +53,10 @@ class MyEventAdapter(var mLister: onMyEventAdapterListener,
         if (key != "") {
             holder!!.id = key
 
-            //TODO: помечать подписанные event????
+
 
             holder.title.text = data?.get(position)!![holder.id]?.titleEvent
-            holder.timeStart.text = getTimeString(data?.get(position)!![holder.id]!!.dateStart)
+            holder.timeStart.text = buildDisplayTime(getTimeString(data?.get(position)!![holder.id]!!.dateStart))
 
             holder.mainLayout.setOnClickListener(View.OnClickListener {
 
@@ -68,7 +68,7 @@ class MyEventAdapter(var mLister: onMyEventAdapterListener,
                 mLister.getIdSelectedEventForRemove(holder.id)
             })
 
-            if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()){
+            if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()) {
                 Picasso.with(context).load(data?.get(position)!![holder.id]?.uriImage)
                         .placeholder(android.R.drawable.ic_menu_report_image)
                         .error(R.mipmap.ic_launcher)
@@ -80,15 +80,30 @@ class MyEventAdapter(var mLister: onMyEventAdapterListener,
             }
 
 
-
         }
     }
 
     private fun getTimeString(timeMillionsSecond: Long): String? {
-        //TODO: добавить удобно варимую дату
+
         val date = Date(timeMillionsSecond)
         val formatter = SimpleDateFormat("M:d:HH:mm")
         return formatter.format(date)
+    }
+
+    private fun buildDisplayTime(timeString: String?): String {
+        val fullDateExpirationString: String = timeString!!
+        val tagSeparate = context.getString(R.string.tag_separate_date)
+        val separateFullDateExpirationList = fullDateExpirationString.split((tagSeparate).toRegex())
+
+
+        return month[separateFullDateExpirationList[0].toInt()] +
+                tagSeparate +
+                separateFullDateExpirationList[1] +
+                tagSeparate +
+                separateFullDateExpirationList[2] +
+                tagSeparate +
+                separateFullDateExpirationList[3]
+
     }
 
     override fun getItemCount(): Int = data!!.size

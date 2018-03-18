@@ -53,8 +53,8 @@ class DisplayFullEventFragment : Fragment() {
         val myRef = FirebaseDatabase.getInstance().getReference(NAME_TABLE_EVENT_DB)
 
         myRef.child(idDisplayEvent).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onCancelled(snapshot: DatabaseError?) {
+                pushLog("onCancelled", snapshot.toString())
             }
 
             override fun onDataChange(snapshot: DataSnapshot?) {
@@ -74,11 +74,12 @@ class DisplayFullEventFragment : Fragment() {
         tv_full_event_location.text = "${event.latitude} : ${event.longitude}"
         tv_full_event_title.text = event.titleEvent
         tv_full_event_description.text = event.description
-        tv_full_event_date_start.text = getTimeString(event.dateStart)
-        tv_full_event_date_expiration.text = getTimeString(event.dateExpiration)
-        if (!event.uriImage.isEmpty()){
+
+        tv_full_event_date_start.text = buildDisplayTime(getTimeString(event.dateStart))
+        tv_full_event_date_expiration.text = buildDisplayTime(getTimeString(event.dateExpiration))
+        if (!event.uriImage.isEmpty()) {
             Picasso.with(context).load(event.uriImage)
-                    .placeholder(R.mipmap.ic_launcher)
+                    .placeholder(android.R.drawable.ic_menu_report_image)
                     .error(R.mipmap.ic_launcher)
                     .config(Bitmap.Config.RGB_565)
                     .fit()
@@ -90,19 +91,34 @@ class DisplayFullEventFragment : Fragment() {
     }
 
     private fun getTimeString(timeMillionsSecond: Long): String? {
-        //TODO: добавить красивую дату
+
         val date = Date(timeMillionsSecond)
         val formatter = SimpleDateFormat("M:d:HH:mm")
         return formatter.format(date)
     }
 
+    private fun buildDisplayTime(timeString: String?): String {
+        val fullDateExpirationString: String = timeString!!
+        val tagSeparate = activity!!.getString(R.string.tag_separate_date)
+        val separateFullDateExpirationList = fullDateExpirationString.split((tagSeparate).toRegex())
+        val month = activity!!.applicationContext.resources.getStringArray(R.array.month)
+
+        return month[separateFullDateExpirationList[0].toInt()] +
+                tagSeparate +
+                separateFullDateExpirationList[1] +
+                tagSeparate +
+                separateFullDateExpirationList[2] +
+                tagSeparate +
+                separateFullDateExpirationList[3]
+
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is OnDisplayFullEventFragmentListener) {
             mListener = context
         } else {
-            throw RuntimeException(context!!.toString() + " must implement OnAllEventFragmentListener")
+            throw RuntimeException(context!!.toString() + " must implement OnDisplayFullEventFragmentListener")
         }
     }
 

@@ -79,14 +79,14 @@ class SignedEventFragment : Fragment()
         this.NAME_TABLE_EVENT_DB = activity!!.getString(R.string.name_table_event_db)
 
         recycler_list.layoutManager = LinearLayoutManager(activity!!.applicationContext)
-        adapter = SignedEventAdapter(this, mutableListOf<HashMap<String, Event>>(),activity!!.applicationContext)
+        adapter = SignedEventAdapter(this, mutableListOf<HashMap<String, Event>>(),activity!!.applicationContext,  activity!!.applicationContext.resources.getStringArray(R.array.month))
         recycler_list.adapter = adapter
 
         val myRef = FirebaseDatabase.getInstance().getReference(NAME_TABLE_ATTENDEES_EVENT_DB)
 
         myRef.child(FirebaseAuth.getInstance().currentUser!!.uid).limitToFirst(NUMBER_EVENT_RECORDS_FOR_SAMLE).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onCancelled(snapshot: DatabaseError?) {
+              pushLog("onCancelled",snapshot.toString())
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -94,7 +94,7 @@ class SignedEventFragment : Fragment()
                 pushLog("dataSnapshot.value 1", dataSnapshot.value.toString())
                 if (dataSnapshot.value == null) {
                     adapter!!.updateDate(mutableListOf<HashMap<String, Event>>())
-//                    Toast.makeText(activity!!.applicationContext,"You do not have signed events",Toast.LENGTH_SHORT).show() //падает хз
+
                 } else {
 
                     for (idEvent in dataSnapshot.children) {
@@ -116,8 +116,8 @@ class SignedEventFragment : Fragment()
         //TODO: ИДИОТИЗМ
         val myRef = FirebaseDatabase.getInstance().reference
         myRef.child(NAME_TABLE_EVENT_DB).limitToFirst(NUMBER_EVENT_RECORDS_FOR_SAMLE).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onCancelled(snapshot: DatabaseError?) {
+                pushLog("onCancelled",snapshot.toString())
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {

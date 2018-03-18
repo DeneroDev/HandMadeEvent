@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_btn_remove_item_my_event">Удалить</string>
+    <string name="text_btn_subscribe_item">Подписаться</string>
+    <string name="name_table_event_db">События</string>
+    <string name="text_btn_time_picker">Выбор времени</string>
+    <string name="text_btn_data_picker">Выбор даты</string>
+    <string name="hint_edit_text_title">Название</string>
+    <string name="hint_tv_location">Место</string>
+    <string name="text_btn_created_new_event">Создать</string>
+    <string name="hint_tv_start_date">Дата начала</string>
+    <string name="hint_tv_expiration_date">Дата конца</string>
+    <string name="hint_tv_start_time">Время начала</string>
+    <string name="hint_tv_expiration_time">Время конца</string>
+    <string name="hint_tv_description">Описание</string>
+    <string name="text_btn_unsubscribe_item_signed_event">Отписаться</string>
+</resources>

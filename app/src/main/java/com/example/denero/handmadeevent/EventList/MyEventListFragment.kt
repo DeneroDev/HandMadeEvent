@@ -1,7 +1,6 @@
 package com.example.denero.handmadeevent.EventList
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import com.google.firebase.auth.FirebaseAuth
@@ -60,8 +58,7 @@ class MyEventListFragment : Fragment()
                         }
 
                         override fun onChildAdded(snapshot: DataSnapshot?, p1: String?) {
-//                        pushLog("onChildAdded", snapshot.toString())
-                            pushLog("removeRecordAttendees remove snapshot!!.key", snapshot!!.key)
+
 
                             FirebaseDatabase.getInstance().reference
                                     .child(NAME_TABLE_ATTENDEES_EVENT_DB
@@ -81,7 +78,7 @@ class MyEventListFragment : Fragment()
     }
 
     override fun getIdSelectedEvent(selectEventId: String) {
-        // при добавление функций редактирования
+       mListenerMyEventList!!.getEventSelectedId(selectEventId)
     }
 
     private var mListenerMyEventList: OnMyEventListFragmentListener? = null
@@ -96,8 +93,8 @@ class MyEventListFragment : Fragment()
     private var eventList: MutableList<HashMap<String, Event>>? = null
 
     interface OnMyEventListFragmentListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+
+        fun getEventSelectedId(idEventSelected: String)
     }
 
     override fun onAttach(context: Context?) {
@@ -120,11 +117,13 @@ class MyEventListFragment : Fragment()
         this.NAME_TABLE_EVENT_DB = activity!!.getString(R.string.name_table_event_db)
 
         recycler_list.layoutManager = LinearLayoutManager(activity!!.applicationContext)
-        adapter = MyEventAdapter(this, mutableListOf<HashMap<String, Event>>(), activity!!.applicationContext)
+        adapter = MyEventAdapter(this, mutableListOf<HashMap<String, Event>>()
+                , activity!!.applicationContext
+                , activity!!.applicationContext.resources.getStringArray(R.array.month))
         recycler_list.adapter = adapter
 
         val myRef = FirebaseDatabase.getInstance().reference
-//TODO: выводит 60 записей
+
         myRef.child(NAME_TABLE_EVENT_DB)
                 .limitToFirst(NUMBER_RECORDS_EVENT_FOR_SAMPLING)
                 .orderByChild("userCreated")

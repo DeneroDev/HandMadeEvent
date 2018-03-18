@@ -12,11 +12,10 @@
 
         <TextView
             android:id="@+id/tv_title_event_item_event"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="48dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_time_start_event_item_event"
@@ -29,13 +28,13 @@
             android:id="@+id/tv_time_start_event_item_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_subscribe_item_event"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.96"
+            app:layout_constraintStart_toEndOf="@+id/tv_title_event_item_event"
+            app:layout_constraintTop_toBottomOf="@+id/image_item_event"
             tools:text="02:04:2011" />
 
         <Button

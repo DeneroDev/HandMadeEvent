@@ -21,9 +21,7 @@ class EventListActivity : AppCompatActivity()
         , SignedEventFragment.OnSignedEventFragmentListener
         , MyEventListFragment.OnMyEventListFragmentListener {
 
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 
 
     override fun closeMe(keyFragment: String) {
@@ -45,7 +43,7 @@ class EventListActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_list)
 
-        //TODO: добавить человеческое условие
+
         if (intent.hasExtra(getString(R.string.key_mission_open_fragment))) {
             when (intent.getStringExtra(getString(R.string.key_mission_open_fragment))) {
                 getString(R.string.key_signed_event_fragment) -> {
