@@ -44,6 +44,12 @@ class EventListActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_list)
 
+        pushLog("AAAAAAAAAAAAAAAAAAAAAAAAAAAA","CCCCCCCCCCCCCCCCCCCC")
+        if (intent.hasExtra(getString(R.string.key_mission_open_fragment))) {
+            pushLog("key_mission_open_fragment", intent.getStringExtra(getString(R.string.key_mission_open_fragment)))
+            pushLog("key_id_event_selected", intent.getStringExtra(getString(R.string.key_id_event_selected)))
+            pushLog("CCCCCCCCCCCCCCCCCCCCCCCCCCCC","")
+        }
 
         if (intent.hasExtra(getString(R.string.key_mission_open_fragment))) {
             when (intent.getStringExtra(getString(R.string.key_mission_open_fragment))) {
