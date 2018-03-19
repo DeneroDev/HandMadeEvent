@@ -2,59 +2,75 @@ package com.example.denero.handmadeevent.Notification
 
 import android.util.Log
 import com.example.denero.handmadeevent.model.Event
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Fedor on 13.03.2018.
  */
 
-//Создание(отсылка запроса сервер) уведомления о начале эвента.
-//Костыльно добавил отправку информации о запланированном удалении на сервер
 class RetrofitApiHelper() {
 
     val TAG = "RetroApiHelper"
     val START_ACTION = "start"
-    val DELETE_ACTION = "delete"
+    val DELETE_NOTIFICATION_FROM_SERVER = "delete_from_server"
 
-    fun sendStartNotification(event: Event, event_id : String, calendar: Calendar){
+    fun sendStartNotification(event: Event, event_id: String, calendar: Calendar) {
         NotificationSubscription().adminSubscribeOn(event)
 
-        resulAndEnqueue(START_ACTION, event, event_id, calendar, 0)
+        var client = server_client()
+        var result = createCallResult(client, event, event_id, calendar, START_ACTION)
+        retrofitEnqueue(result)
+    }
+    fun deleteNotificationFromServer(event: Event, event_id: String, calendar: Calendar) {
+        var client = server_client()
+        var result = createCallResult(client, event, event_id, calendar, DELETE_NOTIFICATION_FROM_SERVER)
+        retrofitEnqueue(result)
     }
 
-    fun resulAndEnqueue(action : String, event: Event, event_id : String, calendar: Calendar, inc : Int) {
-        var client = RetrofitApiService.create()
-        Log.i(TAG, action)
-        var actionTime : Long = 0
-        var topic = ""
-        when(action) {
-            START_ACTION -> {
-                actionTime = event.dateStart
-                topic = NotificationSubscription().createTopic(event)
-            }
-            DELETE_ACTION -> {
-                actionTime = event.dateExpiration
-                topic = NotificationSubscription().createAdminTopic(event)
-            }
-        }
+    private fun server_client(): RetrofitApiService {
+        var client = OkHttpClient().newBuilder()
+                .readTimeout(600, TimeUnit.SECONDS)
+                .writeTimeout(600, TimeUnit.SECONDS)
+                .build()
 
-        var result = client.startNotificationPostRequest(
+        var retrofit = Retrofit.Builder()
+                .baseUrl("http://35.161.16.255/")
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .client(client)
+                .build()
+
+        return retrofit.create(RetrofitApiService::class.java)
+    }
+
+    private fun createCallResult(
+            client : RetrofitApiService,
+            event: Event,
+            event_id: String,
+            calendar: Calendar,
+            action : String) : Call<String> {
+
+        return client.startNotificationPostRequest(
                 action,
                 event_id,
-                (actionTime / 1000).toString(),
+                (event.dateStart / 1000).toString(),
+                (event.dateExpiration / 1000).toString(),
                 calendar.timeZone.id,
-                topic)
+                NotificationSubscription().createTopic(event))
+    }
 
+    private fun retrofitEnqueue(result: Call<String>){
         result.enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>?, response: Response<String>) {
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     Log.i(TAG, "Success!")
-                    if (inc == 0) resulAndEnqueue(DELETE_ACTION, event, event_id, calendar, inc + 1)
-                }
-                else Log.i(TAG, "Code: " + response.code().toString())
+                } else Log.i(TAG, "Code: " + response.code().toString())
             }
 
             override fun onFailure(call: Call<String>?, t: Throwable?) {
@@ -62,4 +78,6 @@ class RetrofitApiHelper() {
             }
         })
     }
+
+
 }

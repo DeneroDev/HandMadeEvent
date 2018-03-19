@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.example.denero.handmadeevent.EventList.EventListActivity
+import com.example.denero.handmadeevent.FullEventMapActivity
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import com.google.firebase.database.*
@@ -26,7 +27,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         if (remoteMessage.data.size > 0) {
             var item = remoteMessage.data
-            when(item["message"].toString()){
+            when (item["message"].toString()) {
                 "start" -> onRecieveDataGetEvent(item["key"].toString())
                 "delete" -> deleteEvent(item["key"].toString())
                 "unsub" -> NotificationSubscription().unsubscribeOn(item["topic"].toString())
@@ -58,7 +59,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         var notification_id = (event.createdTimeInMillis % 10000000).toInt()
 
-        var intent = createIntentToFullInfoEvent(event_key)
+        var intent = createIntentToFullInfoEvent(event, event_key)
         var contentIntent = PendingIntent.getActivity(this, notification_id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         var intentDone = Intent(this, ActionNotificationBtnReceiver::class.java)
@@ -106,10 +107,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     //Создание интента для отображения полной информации о эвенте
     //Изменить по необходимости
-    private fun createIntentToFullInfoEvent(event_key: String): Intent {
-        var intent = Intent(this, EventListActivity::class.java)
-        intent.putExtra(getString(R.string.key_id_event_selected), event_key)
-        intent.putExtra(getString(R.string.key_mission_open_fragment), getString(R.string.key_full_event_fragment))
+    private fun createIntentToFullInfoEvent(event: Event, event_key: String): Intent {
+        var intent = Intent(this, FullEventMapActivity::class.java)
+        intent.putExtra("pathImage",event.pathDisk)
+        intent.putExtra("eventDesctiption",event.description)
+        intent.putExtra("eventTitle",event.titleEvent)
+        intent.putExtra("eventURL",event.uriImage)
+        intent.putExtra("eventCreator",event.userCreated)
+        intent.putExtra("eventLongitude",event.longitude)
+        intent.putExtra("eventLatitude",event.latitude)
+        intent.putExtra("eventTimeStart",event.dateStart)
+        intent.putExtra("eventTimeExpiration",event.dateExpiration)
+        intent.putExtra("eventTimeCreate", event.createdTimeInMillis)
+        intent.putExtra("eventId", event_key)
+
         return intent
     }
 
@@ -126,7 +137,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun removeRecordAttendees(selectEventId: String) {
-        if (selectEventId!="") {
+        if (selectEventId != "") {
             val refAttendees = FirebaseDatabase.getInstance().reference
             refAttendees.child(getString(R.string.name_table_attendees_event_db))
                     .orderByChild(selectEventId)
