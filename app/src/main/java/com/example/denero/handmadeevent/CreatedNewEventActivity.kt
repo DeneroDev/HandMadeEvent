@@ -336,11 +336,12 @@ class CreatedNewEventActivity : AppCompatActivity(),
     }
 
     private fun checkDataDisplay(): Boolean = !((edit_text_new_event_title.text.toString().replace(" ", "") == "")
-            or (tv_new_event_location.text == "")
-            or (tv_new_event_date_start.text == "")
-            or (tv_new_event_date_expiration.text == "")
-            or (tv_new_event_time_start.text == "")
-            or (tv_new_event_time_expiration.text == ""))
+            or (this.locationPoint.latitude == 0.0)
+            or (this.locationPoint.longitude == 0.0)
+            or (this.timeExpirationMap.isEmpty())
+            or (this.timeStartMap.isEmpty())
+            or (this.dateExpirationMap.isEmpty())
+            or (this.dateStartMap.isEmpty()))
 
 
     private fun buildDataForWriteInDB(): Event {

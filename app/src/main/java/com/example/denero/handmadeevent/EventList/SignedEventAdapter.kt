@@ -1,6 +1,7 @@
 package com.example.denero.handmadeevent.EventList
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.denero.handmadeevent.FullEventMapActivity
 import com.example.denero.handmadeevent.Notification.NotificationSubscription
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
@@ -60,8 +62,9 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
             holder.timeStart.text = buildDisplayTime(getTimeString(data?.get(position)!![holder.id]!!.dateStart))
 
             holder.mainLayout.setOnClickListener(View.OnClickListener {
-
-                mLister.getIdSelectedEvent(holder.id)
+                var intent = Intent(holder.view.context, FullEventMapActivity::class.java)
+                intent.putExtra("eventId",holder.id)
+                holder.view.context.startActivity(intent)
             })
 
             holder.btnUnsubscribe.setOnClickListener(View.OnClickListener {
@@ -73,7 +76,7 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
             })
             if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()) {
                 Picasso.with(context).load(data?.get(position)!![holder.id]?.uriImage)
-                        .placeholder(android.R.drawable.ic_menu_report_image)
+                        .placeholder(R.drawable.ic_question)
                         .error(R.mipmap.ic_launcher)
                         .config(Bitmap.Config.RGB_565)
                         .fit()
@@ -92,10 +95,10 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
         val separateFullDateExpirationList = fullDateExpirationString.split((tagSeparate).toRegex())
 
 
-        return month[separateFullDateExpirationList[0].toInt()] +
+        return separateFullDateExpirationList[1] +
                 tagSeparate +
-                separateFullDateExpirationList[1] +
-                tagSeparate +
+                month[separateFullDateExpirationList[0].toInt() - 1] +
+                " " +
                 separateFullDateExpirationList[2] +
                 tagSeparate +
                 separateFullDateExpirationList[3]

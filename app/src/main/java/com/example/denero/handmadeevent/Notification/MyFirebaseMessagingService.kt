@@ -7,6 +7,7 @@ import android.content.Intent
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.example.denero.handmadeevent.EventList.EventListActivity
+import com.example.denero.handmadeevent.FullEventMapActivity
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import com.google.firebase.database.DataSnapshot
@@ -103,9 +104,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     //Создание интента для отображения полной информации о эвенте
     //Изменить по необходимости
     private fun createIntentToFullInfoEvent(event_key: String): Intent {
-        var intent = Intent(this, EventListActivity::class.java)
-        intent.putExtra(getString(R.string.key_id_event_selected), event_key)
-        intent.putExtra(getString(R.string.key_mission_open_fragment), getString(R.string.key_full_event_fragment))
+        var intent = Intent(this, FullEventMapActivity::class.java)
+        intent.putExtra( "eventId", event_key)
+
         return intent
     }
 }

@@ -47,7 +47,7 @@ class EventListActivity : AppCompatActivity()
         pushLog("AAAAAAAAAAAAAAAAAAAAAAAAAAAA","CCCCCCCCCCCCCCCCCCCC")
         if (intent.hasExtra(getString(R.string.key_mission_open_fragment))) {
             pushLog("key_mission_open_fragment", intent.getStringExtra(getString(R.string.key_mission_open_fragment)))
-            pushLog("key_id_event_selected", intent.getStringExtra(getString(R.string.key_id_event_selected)))
+           // pushLog("key_id_event_selected", intent.getStringExtra(getString(R.string.key_id_event_selected)))
             pushLog("CCCCCCCCCCCCCCCCCCCCCCCCCCCC","")
         }
 

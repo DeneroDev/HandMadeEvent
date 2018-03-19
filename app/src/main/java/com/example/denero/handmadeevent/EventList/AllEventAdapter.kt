@@ -1,6 +1,7 @@
 package com.example.denero.handmadeevent.EventList
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.denero.handmadeevent.FullEventMapActivity
 import com.example.denero.handmadeevent.Notification.NotificationSubscription
 import com.example.denero.handmadeevent.R
 
@@ -29,7 +31,7 @@ import java.util.*
 class AllEventAdapter(var mLister: onAllEventAdapterListener,
                       var data: MutableList<HashMap<String, Event>>?,
                       var context: Context,
-                      var month:Array<String>)
+                      var month: Array<String>)
     : RecyclerView.Adapter<AllEventAdapter.MyViewHolder>() {
 
     private val LOG_TAG = "GOT"
@@ -60,7 +62,9 @@ class AllEventAdapter(var mLister: onAllEventAdapterListener,
             holder.timeStart.text = buildDisplayTime(getTimeString(data?.get(position)!![holder.id]!!.dateStart))
 
             holder.mainLayout.setOnClickListener(View.OnClickListener {
-                mLister.getIdSelectedEvent(holder.id)
+                var intent = Intent(holder.view.context, FullEventMapActivity::class.java)
+                intent.putExtra("eventId", holder.id)
+                holder.view.context.startActivity(intent)
             })
 
 
@@ -73,7 +77,7 @@ class AllEventAdapter(var mLister: onAllEventAdapterListener,
 
             if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()) {
                 Picasso.with(context).load(data?.get(position)!![holder.id]?.uriImage)
-                        .placeholder(android.R.drawable.ic_menu_report_image)
+                        .placeholder(R.drawable.ic_question)
                         .error(R.mipmap.ic_launcher)
                         .config(Bitmap.Config.RGB_565)
                         .fit()
@@ -87,22 +91,24 @@ class AllEventAdapter(var mLister: onAllEventAdapterListener,
 
     private fun buildDisplayTime(timeString: String?): String {
         val fullDateExpirationString: String = timeString!!
-        val tagSeparate=context.getString(R.string.tag_separate_date)
+        val tagSeparate = context.getString(R.string.tag_separate_date)
         val separateFullDateExpirationList = fullDateExpirationString.split((tagSeparate).toRegex())
+        pushLog("date ", fullDateExpirationString)
+        pushLog("date ", month)
 
 
-        return month[separateFullDateExpirationList[0].toInt()] +
+        return separateFullDateExpirationList[1] +
                 tagSeparate +
-                separateFullDateExpirationList[1] +
-                tagSeparate +
+                month[separateFullDateExpirationList[0].toInt() - 1] +
+                " " +
                 separateFullDateExpirationList[2] +
                 tagSeparate +
                 separateFullDateExpirationList[3]
-
     }
 
+
     private fun getTimeString(timeMillionsSecond: Long): String? {
-        //TODO: добавить красивую дату
+
         val date = Date(timeMillionsSecond)
         val formatter = SimpleDateFormat("M:d:HH:mm")
         return formatter.format(date)

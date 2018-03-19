@@ -156,7 +156,7 @@ class MapsActivity() : AppCompatActivity(),
                 event.id = p0.key
                 event.pathDisk = sp.getString(event.titleEvent,"")
                 Log.d("PROGRESS",sp.getString(event.titleEvent,""))
-                try {
+
                    /* if(event.pathDisk==""){
                         Picasso.with(applicationContext)
                                 .load(event.uriImage)
@@ -193,12 +193,7 @@ class MapsActivity() : AppCompatActivity(),
 
                                 })*/
                     mClusterManager.addItem(event)
-                }catch (e:Exception){
-                    Log.d("EXCEP_1",e.toString() + "\n" + event.uriImage + " End")
-                    mClusterManager.addItem(event)
-                }
-
-
+                    mClusterManager.cluster()
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
@@ -242,6 +237,8 @@ class MapsActivity() : AppCompatActivity(),
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),1)
         }
 
+      //  mClusterManager.cluster()
+
     }
 
     override fun onClusterClick(p0: Cluster<Event>): Boolean {
@@ -271,21 +268,8 @@ class MapsActivity() : AppCompatActivity(),
 
 
     override fun onClusterItemClick(p0: Event?): Boolean {
-       var intent = Intent(applicationContext,FullEventMapActivity::class.java)
-        intent.putExtra("pathImage",p0!!.pathDisk)
-        intent.putExtra("eventDesctiption",p0.description)
-        intent.putExtra("eventTitle",p0.titleEvent)
-        intent.putExtra("eventURL",p0.uriImage)
-        intent.putExtra("eventCreator",p0.userCreated)
-        intent.putExtra("eventLongitude",p0.longitude)
-        intent.putExtra("eventLatitude",p0.latitude)
-        intent.putExtra("eventTimeStart",p0.dateStart)
-        intent.putExtra("eventTimeExpiration",p0.dateExpiration)
-        intent.putExtra("eventTimeCreate", p0.createdTimeInMillis)
-        intent.putExtra("eventId", p0.id)
-        Log.d("LONGI",p0.longitude.toString())
-        Log.d("LATITUDE",p0.latitude.toString())
-        Log.d("NAME",p0.titleEvent)
+        var intent = Intent(applicationContext,FullEventMapActivity::class.java)
+        intent.putExtra("eventId", p0!!.id)
         startActivity(intent)
 
         return true
@@ -308,6 +292,7 @@ class MapsActivity() : AppCompatActivity(),
         }
         mClusterManager = ClusterManager<Event>(this, mMap)
         mClusterManager.setRenderer(EventRenderer(applicationContext,mMap,mClusterManager,layoutInflater,resources))
+        mClusterManager
         mMap.setOnCameraIdleListener(mClusterManager)
         mMap.setOnMarkerClickListener(mClusterManager)
         mMap.setOnInfoWindowClickListener(mClusterManager)
@@ -316,6 +301,7 @@ class MapsActivity() : AppCompatActivity(),
         mClusterManager.setOnClusterItemClickListener(this)
         mClusterManager.setOnClusterItemInfoWindowClickListener(this)
     }
+
 
     override fun onMarkerDragEnd(p0: Marker?) {
         Toast.makeText(applicationContext,p0!!.position.toString(),Toast.LENGTH_LONG).show()
@@ -351,6 +337,7 @@ class MapsActivity() : AppCompatActivity(),
     }
 
     fun SetLoc(location:Location){
+        mClusterManager.cluster()
         var cameraPosition = CameraPosition.Builder()
                 .target(LatLng(location.latitude,location.longitude))
                 .zoom(16f)
@@ -410,15 +397,24 @@ class MapsActivity() : AppCompatActivity(),
             Log.d("BEFORE:",item.pathDisk)
             /*var bitmap = BitmapFactory.decodeFile(item.pathDisk)
             mImageView.setImageBitmap(bitmap)*/
-            Picasso.with(applicationContext)
-                    .load(item.uriImage)
-                    .config(Bitmap.Config.RGB_565)
-                    .fit()
-                    .into(mImageView)
-            val icon = mIconGenerator.makeIcon()
-            markerOptions!!.icon(BitmapDescriptorFactory.fromBitmap(icon))
-                    .title(item.titleEvent)
-                    .snippet(item.description)
+            if(item.uriImage!=""){
+                Picasso.with(applicationContext)
+                        .load(item.uriImage)
+                        .config(Bitmap.Config.RGB_565)
+                        .fit()
+                        .into(mImageView)
+                val icon = mIconGenerator.makeIcon()
+                markerOptions!!.icon(BitmapDescriptorFactory.fromBitmap(icon))
+                        .title(item.titleEvent)
+                        .snippet(item.description)
+            }
+            else{
+                mImageView.setImageBitmap(BitmapFactory.decodeResource(resources,R.drawable.camera))
+                val icon = mIconGenerator.makeIcon()
+                markerOptions!!.icon(BitmapDescriptorFactory.fromBitmap(icon))
+                        .title(item.titleEvent)
+                        .snippet(item.description)
+            }
            }
          catch (e:Exception){
                 Log.d("EXCEP_2",e.toString())
@@ -430,6 +426,10 @@ class MapsActivity() : AppCompatActivity(),
             }
 
         }
+
+
+
+
 
         override fun onBeforeClusterRendered(cluster: Cluster<Event>?, markerOptions: MarkerOptions?) {
             try{
@@ -451,7 +451,8 @@ class MapsActivity() : AppCompatActivity(),
                 val icon = mClusterIconGenerator.makeIcon(cluster.getSize().toString())
                 markerOptions!!.icon(BitmapDescriptorFactory.fromBitmap(icon))
             }catch (e:Exception){
-                Toast.makeText(applicationContext,"Что-то не так!",Toast.LENGTH_LONG).show()
+              //  Toast.makeText(applicationContext,"Что-то не так!",Toast.LENGTH_LONG).show()
+                Log.d("EXCEP_3",e.toString())
             }
 
         }
