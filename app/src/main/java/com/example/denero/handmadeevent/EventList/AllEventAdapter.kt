@@ -84,6 +84,8 @@ class AllEventAdapter(var mLister: onAllEventAdapterListener,
                         .centerCrop()
                         .into(holder.image)
 
+            }else{
+                holder.image.setImageResource(R.drawable.ic_question)
             }
 
         }

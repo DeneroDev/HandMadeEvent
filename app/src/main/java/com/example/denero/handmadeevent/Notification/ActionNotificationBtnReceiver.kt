@@ -99,10 +99,10 @@ class ActionNotificationBtnReceiver : BroadcastReceiver() {
     }
 
     private fun doneAction(myRef: DatabaseReference, event_key: String) {
-        updateCount(myRef.child(event_key).child("Statistic"), true)
+        //updateCount(myRef.child(event_key).child("Statistic"), true)
     }
 
     private fun cancelAction(myRef: DatabaseReference, event_key: String) {
-        updateCount(myRef.child(event_key).child("Statistic"), false)
+        //updateCount(myRef.child(event_key).child("Statistic"), false)
     }
 }

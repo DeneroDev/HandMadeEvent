@@ -83,6 +83,8 @@ class SignedEventAdapter(var mLister: onSignedEventAdapterListener,
                         .centerCrop()
                         .into(holder.image)
 
+            }else{
+                holder.image.setImageResource(R.drawable.ic_question)
             }
 
 

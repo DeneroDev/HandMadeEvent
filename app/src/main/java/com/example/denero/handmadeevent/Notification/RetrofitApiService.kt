@@ -15,31 +15,14 @@ import java.util.concurrent.TimeUnit
  */
 
 interface RetrofitApiService {
-
     @FormUrlEncoded
     @Headers("content-type: application/x-www-form-urlencoded")
     @POST("handMadeEvent/index.php")
     fun startNotificationPostRequest(
+            @Field("action") action : String,
             @Field("event_key") key : String,
             @Field("event_time") time : String,
+            @Field("event_expiration_time") expirationTime : String,
             @Field("timeZoneId") timeZone : String,
             @Field("notificationTopic") topic : String) : Call<String>
-
-
-    companion object {
-        var client = OkHttpClient().newBuilder()
-                .readTimeout(600, TimeUnit.SECONDS)
-                .writeTimeout(600, TimeUnit.SECONDS)
-                .build()
-
-        fun create() : RetrofitApiService {
-            var retrofit = Retrofit.Builder()
-                    .baseUrl("http://35.161.16.255/")
-                    .addConverterFactory(ScalarsConverterFactory.create())
-                    .client(client)
-                    .build()
-
-            return retrofit.create(RetrofitApiService::class.java)
-        }
-    }
 }

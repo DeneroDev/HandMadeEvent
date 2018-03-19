@@ -265,7 +265,10 @@ class MapsActivity() : AppCompatActivity(),
         return true
     }
 
-
+    override fun onPause() {
+        super.onPause()
+        mClusterManager.cluster()
+    }
 
     override fun onClusterItemClick(p0: Event?): Boolean {
         var intent = Intent(applicationContext,FullEventMapActivity::class.java)

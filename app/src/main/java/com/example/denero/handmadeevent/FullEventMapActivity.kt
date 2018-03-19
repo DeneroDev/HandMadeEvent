@@ -1,5 +1,6 @@
 package com.example.denero.handmadeevent
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.opengl.Visibility
 import android.os.Bundle
@@ -34,34 +35,47 @@ class FullEventMapActivity: AppCompatActivity()
     private lateinit var event:Event
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_full_maps_event)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setTitle("")
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        toolbar_layout.contentScrim = ContextCompat.getDrawable(applicationContext,R.drawable.toolbar_collaps)
+        try{
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_full_maps_event)
+            setSupportActionBar(toolbar)
+            supportActionBar!!.setTitle("")
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            toolbar_layout.contentScrim = ContextCompat.getDrawable(applicationContext,R.drawable.toolbar_collaps)
 
-        displayMap()
+            displayMap()
 
-        val myRef = FirebaseDatabase.getInstance().getReference("Events")
-        myRef.child(intent.getStringExtra("eventId")).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(snapshot: DatabaseError?) {
+            Log.d("GOT",intent.hasExtra("eventId").toString())
+            if (intent.hasExtra("eventId"))
+                Log.d("GOT",intent.getStringExtra("eventId"))
 
-            }
+            val myRef = FirebaseDatabase.getInstance().getReference("Events")
+            myRef.child(intent.getStringExtra("eventId")).addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(snapshot: DatabaseError?) {
 
-            override fun onDataChange(p0: DataSnapshot?) {
-                event = p0!!.getValue(Event::class.java)!!
+                }
 
-                title_map_event.setText(event.titleEvent)
-                title_map_creator.setText("Event create:"+parseDatatoString(event.createdTimeInMillis))
-                title_map_description.setText(event.description)
-                title_map_start.setText("Event started:"+parseDatatoString(event.dateStart))
-                title_map_end.setText("Event ended:"+parseDatatoString(event.dateExpiration))
-                uploadImageForTitle()
+                override fun onDataChange(p0: DataSnapshot?) {
+                    Log.d("GOT","AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                    Log.d("GOT",p0.toString())
+                    if (p0!!.getValue() != null){
+                        event = p0!!.getValue(Event::class.java)!!
+                        title_map_event.setText(event.titleEvent)
+                        title_map_creator.setText("Event create:"+parseDatatoString(event.createdTimeInMillis))
+                        title_map_description.setText(event.description)
+                        title_map_start.setText("Event started:"+parseDatatoString(event.dateStart))
+                        title_map_end.setText("Event ended:"+parseDatatoString(event.dateExpiration))
+                        uploadImageForTitle()
+                    }
 
 
-            }
-        })
+
+                }
+            })
+        }catch (e:Exception){
+            startActivity(Intent(applicationContext,MapsActivity::class.java))
+        }
+
 
         subscr_event.setOnClickListener {
             val myRef = FirebaseDatabase.getInstance().reference.child(getString(R.string.name_table_attendees_event_db) + getString(R.string.tag_separate_query_db) + FirebaseAuth.getInstance().currentUser!!.uid)
@@ -92,7 +106,7 @@ class FullEventMapActivity: AppCompatActivity()
     private fun parseDatatoString(date:Long):String{
         var d = Date(date)
         val monthArrays =  applicationContext.resources.getStringArray(R.array.month)
-        return d.hours.toString() +":"+d.minutes+":"+d.seconds+"("+dayToWeak(d.day)+")" + "|" + d.date +"  "+monthArrays[d.month-1]
+        return d.hours.toString() +":"+d.minutes+":"+d.seconds+"("+dayToWeak(d.day)+")" + "|" + d.date +"  "+monthArrays[d.month]
     }
 
     private fun dayToWeak(day:Int):String{
@@ -109,27 +123,36 @@ class FullEventMapActivity: AppCompatActivity()
     }
 
     private fun displayMap() {
-        val options = GoogleMapOptions()
-        options.compassEnabled(true).zoomControlsEnabled(true)
+        try{
+            val options = GoogleMapOptions()
+            options.compassEnabled(true).zoomControlsEnabled(true)
 
-        val mMapFragment = SupportMapFragment.newInstance(options)
-        mMapFragment.getMapAsync(this)
+            val mMapFragment = SupportMapFragment.newInstance(options)
+            mMapFragment.getMapAsync(this)
 
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.google_maps_fragment, mMapFragment, getString(R.string.tag_maps_fragment))
-        fragmentTransaction.commit()
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.google_maps_fragment, mMapFragment, getString(R.string.tag_maps_fragment))
+            fragmentTransaction.commit()
+        }catch (e:Exception){
+            startActivity(Intent(applicationContext,MapsActivity::class.java))
+        }
+
     }
 
     override fun onMapReady(p0: GoogleMap?) {
-        var cameraPosition:CameraPosition
-        var map = p0
-        cameraPosition = CameraPosition.Builder()
-                .target(LatLng(event.latitude,event.longitude))
-                .zoom(18f)
-                .build()
-        map!!.addMarker(MarkerOptions().position(LatLng(event.latitude,event.longitude)))
-        var cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)
-        map!!.animateCamera(cameraUpdate)
+        try {
+            var cameraPosition: CameraPosition
+            var map = p0
+            cameraPosition = CameraPosition.Builder()
+                    .target(LatLng(event.latitude, event.longitude))
+                    .zoom(18f)
+                    .build()
+            map!!.addMarker(MarkerOptions().position(LatLng(event.latitude, event.longitude)))
+            var cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)
+            map!!.animateCamera(cameraUpdate)
+        }catch (e:Exception){
+            startActivity(Intent(applicationContext,MapsActivity::class.java))
+        }
 
     }
 

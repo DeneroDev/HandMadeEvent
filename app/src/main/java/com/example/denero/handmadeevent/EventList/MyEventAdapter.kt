@@ -1,5 +1,6 @@
 package com.example.denero.handmadeevent.EventList
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -13,6 +14,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.denero.handmadeevent.FullEventMapActivity
+import com.example.denero.handmadeevent.Notification.RetrofitApiHelper
 import com.example.denero.handmadeevent.R
 import com.example.denero.handmadeevent.model.Event
 import com.squareup.picasso.Picasso
@@ -69,6 +71,10 @@ class MyEventAdapter(var mLister: onMyEventAdapterListener,
             holder.btnRemove.setOnClickListener(View.OnClickListener {
                 pushLog("Click ${holder.id}", "Remove")
                 mLister.getIdSelectedEventForRemove(holder.id)
+
+                var event = data?.get(position)!![holder.id] as Event
+                RetrofitApiHelper().deleteNotificationFromServer(event, holder.id, Calendar.getInstance())
+
             })
 
             if (!data?.get(position)!![holder.id]?.uriImage!!.isEmpty()) {
@@ -80,6 +86,8 @@ class MyEventAdapter(var mLister: onMyEventAdapterListener,
                         .centerCrop()
                         .into(holder.image)
 
+            }else{
+                holder.image.setImageResource(R.drawable.ic_question)
             }
 
 

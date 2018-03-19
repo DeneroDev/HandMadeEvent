@@ -226,7 +226,7 @@ class CreatedNewEventActivity : AppCompatActivity(),
 
     private fun setLocationDisplay(point: LatLng?) {
         val locationString = point!!.latitude.toString() + getString(R.string.tag_separate_location) + point.longitude.toString()
-        tv_new_event_location.text = locationString
+        tv_new_event_location.text = "Point installed"
     }
 
     private fun closeFragment(nameFragment: String) {
