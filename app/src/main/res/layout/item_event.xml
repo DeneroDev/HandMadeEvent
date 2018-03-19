@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_margin="4dp"
     android:layout_height="265dp">
 
     <android.support.constraint.ConstraintLayout
@@ -44,17 +45,14 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_common"
-            android:paddingTop="8dp"
             android:drawableTop="@android:drawable/ic_menu_add"
+            android:paddingTop="8dp"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.75"
-            app:layout_constraintStart_toEndOf="@+id/tv_title_event_item_event"
             app:layout_constraintTop_toBottomOf="@+id/image_item_event"
             app:layout_constraintVertical_bias="0.25" />
 
